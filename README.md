@@ -1,2 +1,2 @@
 # monums
-Library of algebras. Written in Mojo🔥
+Library of strange algebras. Written in Mojo🔥
