@@ -7,6 +7,11 @@ alias qtpi : FloatLiteral = 0.78539816339744830961 # pi/4
 alias phi  : FloatLiteral = 1.61803398874989484820 # 1+sqrt(5) / 2
 alias pho  : FloatLiteral = 0.61803398874989484820 # 1-sqrt(5) / -2
 
+
+alias strange = [1, 2, 21, 22, 3, 31, 32, 321, 322, 33, 331, 332, 4, 41, 42, 421, 422, 43, 431, 432, 4321, 4322]
+alias weird = [70, 832, 4030, 5830, 7192, 7912, 9272]
+
+
 from utils.index import StaticIntTuple as Ind
 from algorithm.functional import unroll
 
