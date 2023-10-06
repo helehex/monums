@@ -1,2 +1,6 @@
 # monums
-Library of strange numbers. Written in Mojo🔥
+Strange numbers. Written in Mojo🔥
+
+# package layout
+- monums.sequences
+- monums.eisint
