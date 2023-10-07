@@ -1,6 +1,14 @@
-from monums.eisint import EisInt
+from monums.eisint import EisInt_rewo, EisInt_wovo
 
 fn main():
-    print((EisInt(1,2)).str_po())
-    print((EisInt(1,2) * EisInt(1,2)).str_po(), "=", ((EisInt(1,2) * EisInt(1,2) * EisInt(1,2)) // EisInt(1,2)).str_po())
-    print(((EisInt(1,2) * EisInt(1,2) * EisInt(1,2))).str_po())
+    let rewo: EisInt_rewo = EisInt_rewo(1,-3)
+    print(rewo.str_po())
+    print((rewo * rewo).str_po(), "=", ((rewo * rewo * rewo) // rewo).str_po())
+    print((rewo * rewo * rewo).str_po())
+
+    print()
+
+    let wovo: EisInt_wovo = EisInt_wovo(-4,-1)
+    print(wovo.str_po())
+    print((wovo * wovo).str_po(), "=", ((wovo * wovo * wovo) // wovo).str_po())
+    print((wovo * wovo * wovo).str_po())
