@@ -29,12 +29,12 @@
 
 #alias EisInt = EisInt_rewo
 
-alias EisInt_rewo = EisIntSIMD_rewo[DType.index,1]
+alias IntE_rewo = ESIMD_rewo[DType.index,1]
 
 @value
-@nonmaterializable(EisInt_rewo)
+@nonmaterializable(IntE_rewo)
 @register_passable("trivial")
-struct LitEisInt_rewo:
+struct LitIntE_rewo:
 
     #------[ Alias ]------#
     #
@@ -103,6 +103,10 @@ struct LitEisInt_rewo:
     #------( Unary )------#
     #
     @always_inline
+    fn __neg__(self) -> Self:
+        return Self(-self.re, -self.wo)
+
+    @always_inline
     fn conj(self) -> Self:
         return Self(self.re - self.wo, -self.wo)
     
@@ -159,12 +163,12 @@ struct LitEisInt_rewo:
 
 
 
-alias EisInt_wovo = EisIntSIMD_wovo[DType.index,1]
+alias IntE_wovo = ESIMD_wovo[DType.index,1]
 
 @value
-@nonmaterializable(EisInt_wovo)
+@nonmaterializable(IntE_wovo)
 @register_passable("trivial")
-struct LitEisInt_wovo:
+struct LitIntE_wovo:
 
     #------[ Alias ]------#
     #
@@ -235,6 +239,10 @@ struct LitEisInt_wovo:
     #------( Unary)------#
     #
     @always_inline
+    fn __neg__(self) -> Self:
+        return Self(-self.wo, -self.vo)
+
+    @always_inline
     fn conj(self) -> Self:
         return Self(self.vo, self.wo)
     
@@ -293,13 +301,13 @@ struct LitEisInt_wovo:
 
 @value
 @register_passable("trivial")
-struct EisIntSIMD_rewo[dt: DType, sw: Int]:
+struct ESIMD_rewo[dt: DType, sw: Int]:
 
     #------[ Alias ]------#
     #
-    alias Lit = LitEisInt_rewo
+    alias Lit = LitIntE_rewo
     alias Coef = SIMD[dt,sw]
-    alias Unit = EisIntSIMD_rewo[dt,1]
+    alias Unit = ESIMD_rewo[dt,1]
 
 
     #------< Data >------#
@@ -464,13 +472,13 @@ struct EisIntSIMD_rewo[dt: DType, sw: Int]:
 
 @value
 @register_passable("trivial")
-struct EisIntSIMD_wovo[dt: DType, sw: Int]:
+struct ESIMD_wovo[dt: DType, sw: Int]:
 
     #------[ Alias ]------#
     #
-    alias Lit = LitEisInt_wovo
+    alias Lit = LitIntE_wovo
     alias Coef = SIMD[dt,sw]
-    alias Unit = EisIntSIMD_wovo[dt,1]
+    alias Unit = ESIMD_wovo[dt,1]
 
     #------< Data >------#
     #
@@ -549,8 +557,12 @@ struct EisIntSIMD_wovo[dt: DType, sw: Int]:
         self.vo[index] = item.vo
 
 
-    #------( Uni )------#
+    #------( Unary )------#
     #
+    @always_inline
+    fn __neg__(self) -> Self:
+        return Self(-self.wo, -self.vo)
+
     @always_inline
     fn conj(self) -> Self:
         return Self(self.vo, self.wo)
