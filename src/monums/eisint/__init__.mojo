@@ -1,5 +1,3 @@
-from math import max, min
-
 # Eisenstein integers:
 
 #
@@ -31,16 +29,33 @@ from math import max, min
 
 #alias EisInt = EisInt_rewo
 
+alias EisInt_rewo = EisIntSIMD_rewo[DType.index,1]
+
 @value
+@nonmaterializable(EisInt_rewo)
 @register_passable("trivial")
-struct EisInt_rewo:
-    var re: Int
-    var wo: Int
-    
+struct LitEisInt_rewo:
+
+    #------[ Alias ]------#
+    #
+    alias Coef = IntLiteral
+
+
+    #------< Data >------#
+    #
+    var re: Self.Coef
+    var wo: Self.Coef
+
+
+    #------( Initialize )------#
+    #
     @always_inline
-    fn __init__(wo: Int, po: Int, vo: Int) -> Self:
+    fn __init__(wo: Self.Coef, po: Self.Coef, vo: Self.Coef) -> Self:
         return Self{re: po-vo, wo: wo-vo}
 
+
+    #------( Arithmetic )------#
+    #
     @always_inline
     fn __add__(a: Self, b: Self) -> Self:
         return Self(a.re + b.re, a.wo + b.wo)
@@ -66,52 +81,58 @@ struct EisInt_rewo:
         return Self(a.re + b.wo, a.wo - b.re + b.wo)
     
     @always_inline
-    fn __mul__(a: Self, b: Int) -> Self:
+    fn __mul__(a: Self, b: Self.Coef) -> Self:
         return Self(a.re * b, a.wo * b)
     
     @always_inline
     fn __mul__(a: Self, b: Self) -> Self:
-        let c = -(a.wo * b.wo)
+        let c: IntLiteral = -(a.wo * b.wo)
         return Self((a.re * b.re) + c, (a.re * b.wo) + (a.wo * b.re) + c)
     
     @always_inline
-    fn __floordiv__(a: Self, b: Int) -> Self:
+    fn __floordiv__(a: Self, b: Self.Coef) -> Self:
         return Self(a.re//b, a.wo//b)
 
     @always_inline
     fn __floordiv__(a: Self, b: Self) -> Self:
-        let div = b.re*b.re + b.wo*b.wo - b.re*b.wo
-        let arebwo = a.re * b.wo
+        let div: IntLiteral = b.re*b.re + b.wo*b.wo - b.re*b.wo
+        let arebwo: IntLiteral = a.re * b.wo
         return Self(a.re*b.re + a.wo*b.wo - arebwo, a.wo*b.re - arebwo) // div
     
+
+    #------( Unary )------#
+    #
     @always_inline
     fn conj(self) -> Self:
         return Self(self.re - self.wo, -self.wo)
     
     @always_inline
-    fn coef_po(self) -> Int:
+    fn coef_po(self) -> Self.Coef:
         return max(0, self.re + max(0, -self.wo))
     
     @always_inline
-    fn coef_powo(self) -> Int:
+    fn coef_powo(self) -> Self.Coef:
         return max(0, self.wo + max(0, -self.re))
     
     @always_inline
-    fn coef_povo(self) -> Int:
+    fn coef_povo(self) -> Self.Coef:
         return max(max(0, -self.re), max(0, -self.wo))
     
     @always_inline
-    fn coef_ne(self) -> Int:
+    fn coef_ne(self) -> Self.Coef:
         return max(0, -self.re + max(0, self.wo))
     
     @always_inline
-    fn coef_newo(self) -> Int:
+    fn coef_newo(self) -> Self.Coef:
         return max(0, -self.wo + max(0, self.re))
 
     @always_inline
-    fn coef_nevo(self) -> Int:
+    fn coef_nevo(self) -> Self.Coef:
         return max(max(0, self.re), max(0, self.wo))
     
+
+    #------( Formatting )------#
+    #
     @always_inline
     fn str_rewo(self) -> String:
         return String(self.re) + "re + " + String(self.wo) + "wo"
@@ -138,20 +159,37 @@ struct EisInt_rewo:
 
 
 
+alias EisInt_wovo = EisIntSIMD_wovo[DType.index,1]
+
 @value
+@nonmaterializable(EisInt_wovo)
 @register_passable("trivial")
-struct EisInt_wovo:
-    var wo: Int
-    var vo: Int
-    
+struct LitEisInt_wovo:
+
+    #------[ Alias ]------#
+    #
+    alias Coef = IntLiteral
+
+
+    #------< Data >------#
+    #
+    var wo: Self.Coef
+    var vo: Self.Coef
+
+
+    #------( Initialize )------#
+    #
     @always_inline
-    fn __init__(re: Int) -> Self:
+    fn __init__(re: Self.Coef) -> Self:
         return Self{wo: -re, vo: -re}
 
     @always_inline
-    fn __init__(wo: Int, po: Int, vo: Int) -> Self:
+    fn __init__(wo: Self.Coef, po: Self.Coef, vo: Self.Coef) -> Self:
         return Self{wo: wo-po, vo: vo-po}
     
+
+    #------( Arithmetic )------#
+    #
     @always_inline
     fn __add__(a: Self, b: Self) -> Self:
         return Self(a.wo + b.wo, a.vo + b.vo)
@@ -177,50 +215,56 @@ struct EisInt_wovo:
         return Self(a.wo - b.vo + b.wo, a.vo + b.wo)
     
     @always_inline
-    fn __mul__(a: Self, b: Int) -> Self:
+    fn __mul__(a: Self, b: Self.Coef) -> Self:
         return Self(a.wo*b, a.vo*b)
     
     @always_inline
     fn __mul__(a: Self, b: Self) -> Self:
-        let c = a.wo*b.vo + a.vo*b.wo
+        let c: IntLiteral = a.wo*b.vo + a.vo*b.wo
         return Self(a.vo*b.vo - c, a.wo*b.wo - c)
 
     @always_inline
-    fn __floordiv__(a: Self, b: Int) -> Self:
+    fn __floordiv__(a: Self, b: Self.Coef) -> Self:
         return Self(a.wo//b, a.vo//b)
     
     @always_inline
     fn __floordiv__(a: Self, b: Self) -> Self:
         return (a*b.conj()) // (b.wo*b.wo + b.vo*b.vo - b.wo*b.vo)
     
+
+    #------( Unary)------#
+    #
     @always_inline
     fn conj(self) -> Self:
         return Self(self.vo, self.wo)
     
     @always_inline
-    fn coef_po(self) -> Int:
+    fn coef_po(self) -> Self.Coef:
         return max(max(0, -self.wo), max(0, -self.vo))
     
     @always_inline
-    fn coef_powo(self) -> Int:
+    fn coef_powo(self) -> Self.Coef:
         return max(0, self.wo + max(0, -self.vo))
     
     @always_inline
-    fn coef_povo(self) -> Int:
+    fn coef_povo(self) -> Self.Coef:
         return max(0, self.vo + max(0, -self.wo))
     
     @always_inline
-    fn coef_ne(self) -> Int:
+    fn coef_ne(self) -> Self.Coef:
         return max(max(0, self.wo), max(0, self.vo))
     
     @always_inline
-    fn coef_newo(self) -> Int:
+    fn coef_newo(self) -> Self.Coef:
         return max(0, -self.wo + max(0, self.vo))
     
     @always_inline
-    fn coef_nevo(self) -> Int:
+    fn coef_nevo(self) -> Self.Coef:
         return max(0, -self.vo + max(0, self.wo))
     
+
+    #------( Formatting )------#
+    #
     @always_inline
     fn str_wovo(self) -> String:
         return String(self.wo) + "wo + " + String(self.wo) + "vo"
@@ -253,6 +297,7 @@ struct EisIntSIMD_rewo[dt: DType, sw: Int]:
 
     #------[ Alias ]------#
     #
+    alias Lit = LitEisInt_rewo
     alias Coef = SIMD[dt,sw]
     alias Unit = EisIntSIMD_rewo[dt,1]
 
@@ -263,12 +308,19 @@ struct EisIntSIMD_rewo[dt: DType, sw: Int]:
     var wo: Self.Coef
 
 
-    #------( Arithemtic )------#
+    #------( Initialize )------#
     #
+    @always_inline
+    fn __init__(lit: Self.Lit) -> Self:
+        return Self{re: lit.re, wo: lit.wo}
+
     @always_inline
     fn __init__(wo: Self.Coef, po: Self.Coef, vo: Self.Coef) -> Self:
         return Self{re: po-vo, wo: wo-vo}
     
+
+    #------( Arithemtic )------#
+    #
     @always_inline
     fn __add__(a: Self, b: Self) -> Self:
         return Self(a.re + b.re, a.wo + b.wo)
@@ -416,6 +468,7 @@ struct EisIntSIMD_wovo[dt: DType, sw: Int]:
 
     #------[ Alias ]------#
     #
+    alias Lit = LitEisInt_wovo
     alias Coef = SIMD[dt,sw]
     alias Unit = EisIntSIMD_wovo[dt,1]
 
@@ -424,17 +477,24 @@ struct EisIntSIMD_wovo[dt: DType, sw: Int]:
     var wo: Self.Coef
     var vo: Self.Coef
     
+
+    #------( Initialize )------#
+    #
+    @always_inline
+    fn __init__(lit: Self.Lit) -> Self:
+        return Self{wo: lit.wo, vo: lit.vo}
+    
     @always_inline
     fn __init__(re: Self.Coef) -> Self:
         return Self{wo: -re, vo: -re}
     
-
-    #------( Arithmetic )------#
-    #
     @always_inline
     fn __init__(wo: Self.Coef, po: Self.Coef, vo: Self.Coef) -> Self:
         return Self{wo: wo-po, vo: vo-po}
     
+
+    #------( Arithmetic )------#
+    #
     @always_inline
     fn __add__(a: Self, b: Self) -> Self:
         return Self(a.wo + b.wo, a.vo + b.vo)
@@ -566,3 +626,39 @@ struct EisIntSIMD_wovo[dt: DType, sw: Int]:
     @always_inline
     fn print_ne[seperator: String = "\n"](self):
         print(self.str_ne[seperator]())
+
+
+
+
+#------ max ------#
+#---
+from math import max as max_
+
+fn max(a: Int, b: Int) -> Int:
+    return max_(a, b)
+
+fn max[dt: DType, sw: Int](a: SIMD[dt,sw], b: SIMD[dt,sw]) -> SIMD[dt,sw]:
+    return max_(a, b)
+
+fn max(a: IntLiteral, b: IntLiteral) -> IntLiteral:  # <-------- ternary doesnt work yet for IntLiteral
+    if a > b:
+        return a
+    else:
+        return b
+
+
+#------ min ------#
+#---
+from math import min as min_
+
+fn min(a: Int, b: Int) -> Int:
+    return min_(a, b)
+
+fn min[dt: DType, sw: Int](a: SIMD[dt,sw], b: SIMD[dt,sw]) -> SIMD[dt,sw]:
+    return min_(a, b)
+
+fn min(a: IntLiteral, b: IntLiteral) -> IntLiteral:  # <-------- ternary doesnt work yet for IntLiteral
+    if a < b:
+        return a
+    else:
+        return b
