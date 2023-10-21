@@ -86,7 +86,7 @@ struct LitIntE_rewo:
     
     @always_inline
     fn __mul__(a: Self, b: Self) -> Self:
-        let c: IntLiteral = -(a.wo * b.wo)
+        let c: Self.Coef = -(a.wo * b.wo)
         return Self((a.re * b.re) + c, (a.re * b.wo) + (a.wo * b.re) + c)
     
     @always_inline
@@ -95,8 +95,8 @@ struct LitIntE_rewo:
 
     @always_inline
     fn __floordiv__(a: Self, b: Self) -> Self:
-        let div: IntLiteral = b.re*b.re + b.wo*b.wo - b.re*b.wo
-        let arebwo: IntLiteral = a.re * b.wo
+        let div: Self.Coef = b.re*b.re + b.wo*b.wo - b.re*b.wo
+        let arebwo: Self.Coef = a.re * b.wo
         return Self(a.re*b.re + a.wo*b.wo - arebwo, a.wo*b.re - arebwo) // div
     
 
@@ -224,7 +224,7 @@ struct LitIntE_wovo:
     
     @always_inline
     fn __mul__(a: Self, b: Self) -> Self:
-        let c: IntLiteral = a.wo*b.vo + a.vo*b.wo
+        let c: Self.Coef = a.wo*b.vo + a.vo*b.wo
         return Self(a.vo*b.vo - c, a.wo*b.wo - c)
 
     @always_inline
