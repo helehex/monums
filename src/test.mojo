@@ -1,4 +1,4 @@
-from monums import LitIntE_rewo, LitIntE_wovo, ESIMD_rewo, ESIMD_wovo, max
+from monums import LitIntE_rewo, LitIntE_wovo, ESIMD_rewo, ESIMD_wovo
 
 fn main():
     test_LitIntE_rewo()
@@ -6,8 +6,19 @@ fn main():
     test_ESIMD_rewo()
     test_ESIMD_wovo()
 
-    print(max(IntLiteral(5), IntLiteral(6)))
-    print(max(IntLiteral(5), IntLiteral(6)))
+    test_seq()
+
+
+fn test_seq():
+    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci
+    print(factorial(10))
+    print(factorial_gamma(10))
+    print(factorial_stirling(10))
+    print(factorial_slow(10))
+
+    # surprised this works, very nice
+    for i in range(10):
+        print(fibonacci(i))
 
 
 fn test_LitIntE_rewo():
