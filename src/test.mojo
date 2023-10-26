@@ -16,7 +16,7 @@ from monums import IntE_rewo, IntE_wovo
 fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
 fn test_seq():
-    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, chain_generic
+    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent
     print(factorial(10))
     print(factorial_gamma(10))
     print(factorial_stirling(10))
@@ -29,7 +29,7 @@ fn test_seq():
     print()
     
     # lets try IntE wo_add... very nice indeed
-    alias fibonacci_eisenstein = chain_generic[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
+    alias fibonacci_eisenstein = recurrent[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
 
     for i in range(20):
         fibonacci_eisenstein(i).print_po()
