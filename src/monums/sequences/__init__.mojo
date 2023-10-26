@@ -27,13 +27,15 @@ A range error occurs if the magnitude of x is too large and may occur if the mag
 """
 
 
-#------( Fibonacci )------#
+
+
+#------ Recurrent ------#
 #
 fn add(a: Int, b: Int) -> Int: return a+b
 
-alias fibonacci = chain_generic[Int,add,0,1]
+alias fibonacci = recurrent[Int,add,0,1]
 
-fn chain_generic[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterations: Int, n0: T = default_n0, n1: T = default_n1) -> T:
+fn recurrent[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterations: Int, n0: T = default_n0, n1: T = default_n1) -> T:
     var _n0: T = n0
     var _n1: T = n1
     for i in range(iterations):
@@ -42,19 +44,8 @@ fn chain_generic[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](ite
         _n1 = _n2
     return _n1
 
-"""
-fn chain[func: fn(Int,Int)->Int](iterations: Int, n0: Int = 0, n1: Int = 1) -> Int:
-    var _n0: Int = n0
-    var _n1: Int = n1
-    for i in range(iterations):
-        let _n2: Int = func(_n0, _n1)
-        _n0 = _n1
-        _n1 = _n2
-    return _n1
-"""
 
-
-#------( Factorial )------#
+#------ Factorial ------#
 #
 fn factorial_slow(n: Int) -> Float64:
     var result: Float64 = 0
@@ -84,7 +75,7 @@ fn factorial(n: Int) -> Int:
     return result
 
 
-#------( Permutial )------#
+#------ Permutial ------#
 #
 fn permutial[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
     alias start = (n-r) + 1
@@ -100,12 +91,18 @@ fn permutial(n: Int, r: Int) -> Int:
     for i in range((n-r)+1, n+1): result *= i
     return result
 
+
+#------ Simplicial ------#
+#
 fn simplicial[d: IntLiteral, n: IntLiteral]() -> IntLiteral:
     return permutial[n, d]()//factorial[d]()
 
 fn simplicial(d: Int, n: Int) -> Int:
     return permutial(n, d)//factorial(d)
 
+
+#------ Pascal ------#
+#
 fn pascal[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
     return permutial[n, r]()//factorial[r]()
 
