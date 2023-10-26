@@ -1,5 +1,6 @@
 from monums import LitIntE_rewo, LitIntE_wovo, ESIMD_rewo, ESIMD_wovo
 
+
 fn main():
     test_LitIntE_rewo()
     test_LitIntE_wovo()
@@ -9,16 +10,32 @@ fn main():
     test_seq()
 
 
+
+
+from monums import IntE_rewo, IntE_wovo
+fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
+
 fn test_seq():
-    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci
+    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, chain_generic
     print(factorial(10))
     print(factorial_gamma(10))
     print(factorial_stirling(10))
     print(factorial_slow(10))
+    print()
 
     # surprised this works, very nice
     for i in range(10):
         print(fibonacci(i))
+    print()
+    
+    # lets try IntE wo_add... very nice indeed
+    alias fibonacci_eisenstein = chain_generic[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
+
+    for i in range(20):
+        fibonacci_eisenstein(i).print_po()
+    print()
+
+
 
 
 fn test_LitIntE_rewo():
