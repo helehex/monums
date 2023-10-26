@@ -27,7 +27,7 @@
 # im  ~ imaginary axis (+i -i)
 
 
-#alias EisInt = EisInt_rewo
+
 
 alias IntE_rewo = ESIMD_rewo[DType.index,1]
 
@@ -61,11 +61,11 @@ struct LitIntE_rewo:
         return Self(a.re + b.re, a.wo + b.wo)
     
     @always_inline("nodebug") # wo_add acts more like subtract than add
-    fn __wo_add__(a: Self, b: Self) -> Self:
+    fn wo_add(a: Self, b: Self) -> Self:
         return Self(a.re - b.wo, a.wo + b.re - b.wo)
     
     @always_inline("nodebug") # vo_add acts more like subtract than add
-    fn __vo_add__(a: Self, b: Self) -> Self:
+    fn vo_add(a: Self, b: Self) -> Self:
         return Self(a.re - b.re + b.wo, a.wo - b.re)
     
     @always_inline("nodebug")
@@ -73,11 +73,11 @@ struct LitIntE_rewo:
         return Self(a.re - b.re, a.wo - b.wo)
     
     @always_inline("nodebug") # wo_sub acts more like add than subtract
-    fn __wo_sub__(a: Self, b: Self) -> Self:
+    fn wo_sub(a: Self, b: Self) -> Self:
         return Self(a.re + b.re - b.wo, a.wo + b.re)
     
     @always_inline("nodebug") # vo_sub acts more like add than subtract
-    fn __vo_sub__(a: Self, b: Self) -> Self:
+    fn vo_sub(a: Self, b: Self) -> Self:
         return Self(a.re + b.wo, a.wo - b.re + b.wo)
     
     @always_inline("nodebug")
@@ -199,11 +199,11 @@ struct LitIntE_wovo:
         return Self(a.wo + b.wo, a.vo + b.vo)
     
     @always_inline("nodebug") # wo_add acts more like subtract than add
-    fn __wo_add__(a: Self, b: Self) -> Self:
+    fn wo_add(a: Self, b: Self) -> Self:
         return Self(a.wo - b.vo, a.vo + b.wo - b.vo)
     
     @always_inline("nodebug") # vo_add acts more like subtract than add
-    fn __vo_add__(a: Self, b: Self) -> Self:
+    fn vo_add(a: Self, b: Self) -> Self:
         return Self(a.wo + b.vo - b.wo, a.vo - b.wo)
     
     @always_inline("nodebug")
@@ -211,11 +211,11 @@ struct LitIntE_wovo:
         return Self(a.wo - b.wo, a.vo - b.vo)
     
     @always_inline("nodebug") # wo_sub acts more like add than subtract
-    fn __wo_sub__(a: Self, b: Self) -> Self:
+    fn wo_sub(a: Self, b: Self) -> Self:
         return Self(a.wo + b.vo, a.vo - b.wo + b.vo)
     
     @always_inline("nodebug") # vo_sub acts more like add than subtract
-    fn __vo_sub__(a: Self, b: Self) -> Self:
+    fn vo_sub(a: Self, b: Self) -> Self:
         return Self(a.wo - b.vo + b.wo, a.vo + b.wo)
     
     @always_inline("nodebug")
@@ -334,11 +334,11 @@ struct ESIMD_rewo[dt: DType, sw: Int]:
         return Self(a.re + b.re, a.wo + b.wo)
     
     @always_inline("nodebug") # wo_add acts more like subtract than add
-    fn __wo_add__(a: Self, b: Self) -> Self:
+    fn wo_add(a: Self, b: Self) -> Self:
         return Self(a.re - b.wo, a.wo + b.re - b.wo)
     
     @always_inline("nodebug") # vo_add acts more like subtract than add
-    fn __vo_add__(a: Self, b: Self) -> Self:
+    fn vo_add(a: Self, b: Self) -> Self:
         return Self(a.re - b.re + b.wo, a.wo - b.re)
     
     @always_inline("nodebug")
@@ -346,11 +346,11 @@ struct ESIMD_rewo[dt: DType, sw: Int]:
         return Self(a.re - b.re, a.wo - b.wo)
     
     @always_inline("nodebug") # wo_sub acts more like add than subtract
-    fn __wo_sub__(a: Self, b: Self) -> Self:
+    fn wo_sub(a: Self, b: Self) -> Self:
         return Self(a.re + b.re - b.wo, a.wo + b.re)
     
     @always_inline("nodebug") # vo_sub acts more like add than subtract
-    fn __vo_sub__(a: Self, b: Self) -> Self:
+    fn vo_sub(a: Self, b: Self) -> Self:
         return Self(a.re + b.wo, a.wo - b.re + b.wo)
     
     @always_inline("nodebug")
@@ -508,11 +508,11 @@ struct ESIMD_wovo[dt: DType, sw: Int]:
         return Self(a.wo + b.wo, a.vo + b.vo)
     
     @always_inline("nodebug") # wo_add acts more like subtract than add
-    fn __wo_add__(a: Self, b: Self) -> Self:
+    fn wo_add(a: Self, b: Self) -> Self:
         return Self(a.wo - b.vo, a.vo + b.wo - b.vo)
     
     @always_inline("nodebug") # vo_add acts more like subtract than add
-    fn __vo_add__(a: Self, b: Self) -> Self:
+    fn vo_add(a: Self, b: Self) -> Self:
         return Self(a.wo + b.vo - b.wo, a.vo - b.wo)
     
     @always_inline("nodebug")
@@ -520,11 +520,11 @@ struct ESIMD_wovo[dt: DType, sw: Int]:
         return Self(a.wo - b.wo, a.vo - b.vo)
     
     @always_inline("nodebug") # wo_sub acts more like add than subtract
-    fn __wo_sub__(a: Self, b: Self) -> Self:
+    fn wo_sub(a: Self, b: Self) -> Self:
         return Self(a.wo + b.vo, a.vo - b.wo + b.vo)
     
     @always_inline("nodebug") # vo_sub acts more like add than subtract
-    fn __vo_sub__(a: Self, b: Self) -> Self:
+    fn vo_sub(a: Self, b: Self) -> Self:
         return Self(a.wo - b.vo + b.wo, a.vo + b.wo)
     
     @always_inline("nodebug")
