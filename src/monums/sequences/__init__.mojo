@@ -14,6 +14,58 @@ alias weird = [70, 836, 4030, 5830, 7192, 7912, 9272, 10430, 10570, 10792, 10990
 
 from utils.index import StaticIntTuple as Ind
 from algorithm.functional import unroll
+from math import sqrt, log, exp, tgamma, lgamma
+
+"""
+The lgamma functions compute the natural logarithm of the absolute value of gamma of x.
+A range error occurs if x is too large.
+A pole error may occur if x is a negative integer or zero.
+
+The tgamma functions compute the gamma function of x.
+A domain error or pole error may occur if x is a negative integer or zero.
+A range error occurs if the magnitude of x is too large and may occur if the magnitude of x is too small.
+"""
+
+
+#------( Fibonacci )------#
+#
+fn add(a: Int, b: Int) -> Int: return a+b
+
+alias fibonacci = chain_generic[Int,add,0,1]
+
+fn chain_generic[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterations: Int, n0: T = default_n0, n1: T = default_n1) -> T:
+    var _n0: T = n0
+    var _n1: T = n1
+    for i in range(iterations):
+        let _n2: T = func(_n0, _n1)
+        _n0 = _n1
+        _n1 = _n2
+    return _n1
+
+"""
+fn chain[func: fn(Int,Int)->Int](iterations: Int, n0: Int = 0, n1: Int = 1) -> Int:
+    var _n0: Int = n0
+    var _n1: Int = n1
+    for i in range(iterations):
+        let _n2: Int = func(_n0, _n1)
+        _n0 = _n1
+        _n1 = _n2
+    return _n1
+"""
+
+
+#------( Factorial )------#
+#
+fn factorial_slow(n: Int) -> Float64:
+    var result: Float64 = 0
+    for i in range(2, n+1): result += log(Float64(i))
+    return exp(result)
+
+fn factorial_stirling(n: Float64) -> Float64:
+    return sqrt(tau*n)*((n/e)**n)
+
+fn factorial_gamma(n: Float64) -> Float64:
+    return tgamma(n + 1.0)
 
 fn factorial[n: IntLiteral]() -> IntLiteral:
     return factorial_literal(n)
@@ -31,6 +83,9 @@ fn factorial(n: Int) -> Int:
     for i in range(2, n+1): result *= i
     return result
 
+
+#------( Permutial )------#
+#
 fn permutial[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
     alias start = (n-r) + 1
     var result: IntLiteral = 1
