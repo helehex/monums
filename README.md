@@ -1,8 +1,17 @@
-# monums
-Strange numbers. Written in Mojo🔥
+# Monums
+Strange numbers for Mojo🔥.
 
-The infrared package may use these as minor-algebras in the future
-
-# package layout
+# Package Layout
 - monums.sequences
-- monums.eisint
+    - integer sequences
+    - mathematical constants
+    - automatic lookup table generation
+- monums.eisenstein
+    - eisenstein literals (arbitrary precision)
+        - LitIntE_rewo
+        - LitIntE_wovo
+    - eisenstein SIMD
+        - ESIMD_rewo
+        - ESIMD_wovo
+
+minor-algebras
