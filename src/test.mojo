@@ -13,17 +13,6 @@ fn main():
 
 
 
-fn test_lookup():
-    from monums.sequences import generate_lookup, fibonacci_
-
-    alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
-
-    print(fibonacci_lookup[7])
-    print(fibonacci_lookup[8])
-    print(fibonacci_lookup[9])
-    print(fibonacci_lookup[10])
-
-
 from monums import IntE_rewo, IntE_wovo
 fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
@@ -48,6 +37,22 @@ fn test_seq():
     print()
 
 
+fn test_lookup():
+    from monums.sequences import generate_lookup, fibonacci_, factorial
+
+    alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
+    alias factorial_lookup = generate_lookup[Int,factorial,20]()
+
+    print(fibonacci_lookup[7])
+    print(fibonacci_lookup[8])
+    print(fibonacci_lookup[9])
+    print(fibonacci_lookup[10])
+    print()
+    print(factorial_lookup[15])
+    print(factorial_lookup[16])
+    print(factorial_lookup[17])
+    print(factorial_lookup[18])
+    print()
 
 
 fn test_LitIntE_rewo():
