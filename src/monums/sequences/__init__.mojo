@@ -16,6 +16,9 @@ from utils.index import StaticIntTuple as Ind
 from algorithm.functional import unroll
 from math import sqrt, log, exp, tgamma, lgamma
 
+@always_inline("nodebug")
+fn add(a: Int, b: Int) -> Int: return a+b
+
 """
 The lgamma functions compute the natural logarithm of the absolute value of gamma of x.
 A range error occurs if x is too large.
@@ -26,14 +29,30 @@ A domain error or pole error may occur if x is a negative integer or zero.
 A range error occurs if the magnitude of x is too large and may occur if the magnitude of x is too small.
 """
 
+from utils.vector import StaticTuple, UnsafeFixedVector
 
+
+#------ Lookup Tables ------#
+#
+fn generate_lookup[T: AnyType, seq: fn(Int)->T, amount: Int]() -> StaticTuple[amount, T]:
+    """
+    Call into an alias definition.
+
+    Use when the index used to access a sequence cannot be known at coimile time.
+    """
+    var result: StaticTuple[amount, T] = StaticTuple[amount, T]()
+    for i in range(amount):
+        result[i] = seq(i)
+    return result
 
 
 #------ Recurrent ------#
 #
-fn add(a: Int, b: Int) -> Int: return a+b
-
 alias fibonacci = recurrent[Int,add,0,1]
+alias fibonacci_ = recurrent_[Int,add,0,1] # not ideal
+
+fn recurrent_[T: AnyType, func: fn(T,T)->T, n0: T, n1: T](iterations: Int) -> T:
+    return recurrent[T, func, n0, n1](iterations)
 
 fn recurrent[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterations: Int, n0: T = default_n0, n1: T = default_n1) -> T:
     var _n0: T = n0
