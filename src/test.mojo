@@ -8,8 +8,20 @@ fn main():
     test_ESIMD_wovo()
 
     test_seq()
+    test_lookup()
 
 
+
+
+fn test_lookup():
+    from monums.sequences import generate_lookup, fibonacci_
+
+    alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
+
+    print(fibonacci_lookup[7])
+    print(fibonacci_lookup[8])
+    print(fibonacci_lookup[9])
+    print(fibonacci_lookup[10])
 
 
 from monums import IntE_rewo, IntE_wovo
