@@ -49,7 +49,7 @@ fn generate_lookup[T: AnyType, seq: fn(Int)->T, amount: Int]() -> StaticTuple[am
 #------ Recurrent ------#
 #
 alias fibonacci = recurrent[Int,add,0,1]
-alias fibonacci_ = recurrent_[Int,add,0,1] # not ideal
+alias fibonacci_ = recurrent_[Int,add,0,1] # not ideal, maybe do something else here
 
 fn recurrent_[T: AnyType, func: fn(T,T)->T, n0: T, n1: T](iterations: Int) -> T:
     return recurrent[T, func, n0, n1](iterations)
