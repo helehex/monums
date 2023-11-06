@@ -43,7 +43,7 @@ fn test_lookup():
 fn test_LitIntE_rewo():
     alias a: LitIntE_rewo = LitIntE_rewo(4,0,20)
     alias b: LitIntE_rewo = LitIntE_rewo(2,0,4)
-    alias c: LitIntE_rewo = LitIntE_rewo(0,0, (1<<50) + 1)
+    alias c: LitIntE_rewo = LitIntE_rewo(0,0, (1<<50) + 3)
 
     print()
     print("#------ Re+Wo Literal Test ------#")
@@ -63,7 +63,7 @@ fn test_LitIntE_rewo():
 fn test_ESIMD_rewo():
     let a: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](4,0,20)
     let b: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](2,0,4)
-    let c: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](0,0, (1<<50) + 1)
+    let c: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](0,0, (1<<50) + 3)
 
     print()
     print("#------ Re+Wo SIMD Test ------#")
@@ -76,7 +76,7 @@ fn test_ESIMD_rewo():
     print("a*b = " + (a*b).str_po[" "]())
     print("a//b = " + (a//b).str_po[" "]())
     print((a*a).str_po[" "](), "=", ((a*a*b) // b).str_po[" "]())
-    print("c*c // c = " + (((c-1)*(c+1) + 1) // c).str_po[" "]() + " != " + c.str_po[" "]()) # optimized away my entire existence
+    print("c*c // c = " + ((c*c) // c).str_po[" "]() + " != " + c.str_po[" "]()) # optimized away my entire existence
     print()
 
 
