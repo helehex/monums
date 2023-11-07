@@ -98,7 +98,7 @@ fn test_ESIMD_wovo():
     print("a-b =", (a-b).str_())
     print("a*b =", (a*b).str_())
     print("a//b =", (a//b).str_()) # im not entirely sure
-    print()
+    print("\nshould be equal, bug? literal wovo works with very similar code and the same math")
     print((a*a).str_(), "=", ((a*a*b) // b).str_()) # still not entirely sure
     print()
 
@@ -109,20 +109,21 @@ fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
 fn test_seq():
     from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent
-    print(factorial(10))
-    print(factorial_gamma(10))
-    print(factorial_stirling(10))
-    print(factorial_slow(10))
-    print()
 
-    # surprised this works, very nice
+    alias n_fac = 10
+    print("\n#--- factorial(" + String(n_fac) + ") ---#")
+    print("lit      =", factorial(n_fac))
+    print("gamma    =", factorial_gamma(10))
+    print("stirling =", factorial_stirling(10))
+    print("slow     =", factorial_slow(10))
+
+    print("\n\n#--- fibonacci from recurrent ---#")
     for i in range(10):
-        print(fibonacci(i))
+        print_no_newline(String(fibonacci(i)) + ", ")
     print()
-    
-    # lets try IntE wo_add... very nice indeed
-    alias fibonacci_eisenstein = recurrent[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
 
+    print("\n\n#--- eisenstein fibonacci from recurrent ---#")
+    alias fibonacci_eisenstein = recurrent[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
     for i in range(20):
         fibonacci_eisenstein(i).print_()
     print()
@@ -134,6 +135,7 @@ fn test_lookup():
     alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
     alias factorial_lookup = generate_lookup[Int,factorial,20]()
 
+    print("\n#--- lookup generation ---#")
     print(fibonacci_lookup[7])
     print(fibonacci_lookup[8])
     print(fibonacci_lookup[9])
