@@ -1,4 +1,4 @@
-from benchmark import Benchmark, keep
+import benchmark
 
 alias fib_loops = 10000
 alias fib_n = 50
@@ -6,58 +6,67 @@ alias fib_n = 50
 alias fac_loops = 1000
 alias fac_n = 20
 
+
+
 fn main():
     from monums.sequences import fibonacci, factorial_gamma, factorial_stirling, factorial_slow
     var ns: Int
-
+    
     fn fib_gen():
         for i in range(fib_loops):
-            keep(fibonacci(fib_n))
+            benchmark.keep(fibonacci(fib_n))
 
     fn fib_hard():
         for i in range(fib_loops):
-            keep(hard_fibonacci(fib_n))
+            benchmark.keep(hard_fibonacci(fib_n))
 
     fn fib_rewo():
         for i in range(fib_loops):
-            keep(fibonacci_rewo(fib_n).re)
+            benchmark.keep(fibonacci_rewo(fib_n).re)
 
     fn fib_wovo():
         for i in range(fib_loops):
-            keep(fibonacci_rewo(fib_n).wo)
+            benchmark.keep(fibonacci_rewo(fib_n).wo)
 
     fn fac_gam():
         for i in range(fac_loops):
-            keep(factorial_gamma(fac_n))
+            benchmark.keep(factorial_gamma(fac_n))
 
     fn fac_stir():
         for i in range(fac_loops):
-            keep(factorial_stirling(fac_n))
+            benchmark.keep(factorial_stirling(fac_n))
 
     fn fac_slow():
         for i in range(fac_loops):
-            keep(factorial_slow(fac_n))
+            benchmark.keep(factorial_slow(fac_n))
     
-    ns = Benchmark().run[fib_gen]()
-    print("fib_gen(" + String(fib_n) + ") " + "nanosec:", ns)
+    print("fib_gen")
+    benchmark.run[fib_gen]().print()
+    print("\n\n")
 
-    ns = Benchmark().run[fib_hard]()
-    print("fib_hard(" + String(fib_n) + ") " + "nanosec:", ns)
+    print("fib_hard")
+    benchmark.run[fib_hard]().print()
+    print("\n\n")
 
-    ns = Benchmark().run[fib_rewo]()
-    print("fib_rewo(" + String(fib_n) + ") " + "nanosec:", ns)
+    print("fib_rewo")
+    benchmark.run[fib_rewo]().print()
+    print("\n\n")
 
-    ns = Benchmark().run[fib_wovo]()
-    print("fib_wovo(" + String(fib_n) + ") " + "nanosec:", ns)
+    print("fib_wovo")
+    benchmark.run[fib_wovo]().print()
+    print("\n\n")
 
-    ns = Benchmark().run[fac_gam]()
-    print("fac_gam(" + String(fac_n) + ") " + "nanosec:", ns)
+    print("fac_gam")
+    benchmark.run[fac_gam]().print()
+    print("\n\n")
+    
+    print("fac_stir")
+    benchmark.run[fac_stir]().print()
+    print("\n\n")
 
-    ns = Benchmark().run[fac_stir]()
-    print("fac_stir(" + String(fac_n) + ") " + "nanosec:", ns)
-
-    ns = Benchmark().run[fac_slow]()
-    print("fac_slow(" + String(fac_n) + ") " + "nanosec:", ns)
+    print("fac_slow")
+    benchmark.run[fac_slow]().print()
+    print("\n\n")
 
 
 
