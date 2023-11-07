@@ -10,34 +10,20 @@ from sys import argv
 fn main():
     let args: VariadicList[StringRef] = argv()
 
+    if len(args) > 1 and args[1] == "temp":
+        pass
+
     if len(args) == 1 or args[1] == "eis":
         test_LitIntE_rewo()
         test_ESIMD_rewo()
         test_LitIntE_wovo()
         test_ESIMD_wovo()
+
     if len(args) == 1 or args[1] == "seq":
         test_seq()
         test_lookup()
 
 
-
-
-fn test_lookup():
-    from monums.sequences import generate_lookup, fibonacci_, factorial
-
-    alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
-    alias factorial_lookup = generate_lookup[Int,factorial,20]()
-
-    print(fibonacci_lookup[7])
-    print(fibonacci_lookup[8])
-    print(fibonacci_lookup[9])
-    print(fibonacci_lookup[10])
-    print()
-    print(factorial_lookup[15])
-    print(factorial_lookup[16])
-    print(factorial_lookup[17])
-    print(factorial_lookup[18])
-    print()
 
 
 fn test_LitIntE_rewo():
@@ -46,17 +32,17 @@ fn test_LitIntE_rewo():
     alias c: LitIntE_rewo = LitIntE_rewo(0,0, (1<<50) + 3)
 
     print()
-    print("#------ Re+Wo Literal Test ------#")
+    print("#------ rewo Literal Test ------#")
     print()
-    print("a = " + a.str_po())
-    print("b = " + b.str_po())
+    print("a =", a.str_())
+    print("b =", b.str_())
     print()
-    print("a+b = " + (a+b).str_po())
-    print("a-b = " + (a-b).str_po())
-    print("a*b = " + (a*b).str_po())
-    print("a//b = " + (a//b).str_po())
-    print((a*a).str_po() + "=" + ((a*a*b) // b).str_po())
-    print("c*c // c = " + ((c*c) // c).str_po() + " = " + c.str_po())
+    print("a+b =", (a+b).str_())
+    print("a-b =", (a-b).str_())
+    print("a*b =", (a*b).str_())
+    print("a//b =", (a//b).str_())
+    print((a*a).str_po(), "=", ((a*a*b) // b).str_())
+    print("c*c // c =", ((c*c) // c).str_(), "=", c.str_())
     print()
 
 
@@ -66,17 +52,17 @@ fn test_ESIMD_rewo():
     let c: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](0,0, (1<<50) + 3)
 
     print()
-    print("#------ Re+Wo SIMD Test ------#")
+    print("#------ rewo SIMD Test ------#")
     print()
-    print("a = " + a.str_po[" "]())
-    print("b = " + b.str_po[" "]())
+    print("a =", a.str_())
+    print("b =", b.str_())
     print()
-    print("a+b = " + (a+b).str_po[" "]())
-    print("a-b = " + (a-b).str_po[" "]())
-    print("a*b = " + (a*b).str_po[" "]())
-    print("a//b = " + (a//b).str_po[" "]())
-    print((a*a).str_po[" "](), "=", ((a*a*b) // b).str_po[" "]())
-    print("c*c // c = " + ((c*c) // c).str_po[" "]() + " != " + c.str_po[" "]()) # optimized away my entire existence
+    print("a+b =", (a+b).str_())
+    print("a-b =", (a-b).str_())
+    print("a*b =", (a*b).str_())
+    print("a//b =", (a//b).str_())
+    print((a*a).str_(), "=", ((a*a*b) // b).str_())
+    print("c*c // c =", ((c*c) // c).str_(), "!=", c.str_()) # optimized away my entire existence
     print()
 
 
@@ -85,16 +71,16 @@ fn test_LitIntE_wovo():
     alias b: LitIntE_wovo = LitIntE_wovo(2,0,4)
     
     print()
-    print("#------ Wo+Vo Literal Test ------#")
+    print("#------ wovo Literal Test ------#")
     print()
-    print("a = " + a.str_po())
-    print("b = " + b.str_po())
+    print("a =", a.str_())
+    print("b =", b.str_())
     print()
-    print("a+b = " + (a+b).str_())
-    print("a-b = " + (a-b).str_po())
-    print("a*b = " + (a*b).str_po())
-    print("a//b = " + (a//b).str_po())
-    print((a*a).str_po() + "=" + ((a*a*b) // b).str_po())
+    print("a+b =", (a+b).str_())
+    print("a-b =", (a-b).str_())
+    print("a*b =", (a*b).str_())
+    print("a//b =", (a//b).str_())
+    print((a*a).str_(), "=", ((a*a*b) // b).str_())
     print()
 
 
@@ -103,15 +89,15 @@ fn test_ESIMD_wovo():
     let b: ESIMD_wovo[DType.index,2] = ESIMD_wovo[DType.index,2](2,0,4)
 
     print()
-    print("#------ Wo+Vo SIMD Test ------#")
+    print("#------ wovo SIMD Test ------#")
     print()
-    print("a = " + a.str_())
-    print("b = " + b.str_())
+    print("a =", a.str_())
+    print("b =", b.str_())
     print()
-    print("a+b = " + (a+b).str_())
-    print("a-b = " + (a-b).str_())
-    print("a*b = " + (a*b).str_())
-    print("a//b = " + (a//b).str_()) # im not entirely sure
+    print("a+b =", (a+b).str_())
+    print("a-b =", (a-b).str_())
+    print("a*b =", (a*b).str_())
+    print("a//b =", (a//b).str_()) # im not entirely sure
     print()
     print((a*a).str_(), "=", ((a*a*b) // b).str_()) # still not entirely sure
     print()
@@ -138,5 +124,23 @@ fn test_seq():
     alias fibonacci_eisenstein = recurrent[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
 
     for i in range(20):
-        fibonacci_eisenstein(i).print_po()
+        fibonacci_eisenstein(i).print_()
+    print()
+
+
+fn test_lookup():
+    from monums.sequences import generate_lookup, fibonacci_, factorial
+
+    alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
+    alias factorial_lookup = generate_lookup[Int,factorial,20]()
+
+    print(fibonacci_lookup[7])
+    print(fibonacci_lookup[8])
+    print(fibonacci_lookup[9])
+    print(fibonacci_lookup[10])
+    print()
+    print(factorial_lookup[15])
+    print(factorial_lookup[16])
+    print(factorial_lookup[17])
+    print(factorial_lookup[18])
     print()

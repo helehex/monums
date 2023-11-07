@@ -156,6 +156,10 @@ struct LitIntE_rewo:
         return "(" + String(self.coef_newo()) + "->" + String(self.coef_ne()) + "<-" + String(self.coef_nevo()) + ")"
     
     @always_inline("nodebug")
+    fn str_(self) -> String:
+        return self.str_po()
+
+    @always_inline("nodebug")
     fn print_rewo(self):
         print(self.str_rewo())
 
@@ -166,6 +170,10 @@ struct LitIntE_rewo:
     @always_inline("nodebug")
     fn print_ne(self):
         print(self.str_ne())
+
+    @always_inline("nodebug")
+    fn print_(self):
+        self.print_po()
 
 
 @value
@@ -333,6 +341,10 @@ struct ESIMD_rewo[dt: DType, sw: Int]:
         return result + self[sw - 1].str_ne()
     
     @always_inline("nodebug")
+    fn str_[seperator: String = " "](self) -> String:
+        return self.str_po[seperator]()
+
+    @always_inline("nodebug")
     fn print_wovo[seperator: String = "\n"](self):
         print(self.str_wovo[seperator]())
 
@@ -343,6 +355,10 @@ struct ESIMD_rewo[dt: DType, sw: Int]:
     @always_inline("nodebug")
     fn print_ne[seperator: String = "\n"](self):
         print(self.str_ne[seperator]())
+
+    @always_inline("nodebug")
+    fn print_[seperator: String = " "](self):
+        self.print_po[seperator]()
 
 
 
@@ -516,15 +532,15 @@ struct ESIMD_wovo[dt: DType, sw: Int]:
     @always_inline("nodebug")
     fn __init__(lit: Self.Lit) -> Self:
         return Self{wo: lit.wo, vo: lit.vo}
-
-    @always_inline("nodebug")
-    fn __init__(lit: Self.Lit.Coef) -> Self:
-        return Self{wo: -lit, vo: -lit}
     
     @always_inline("nodebug")
     fn __init__(re: Self.Coef) -> Self:
         return Self{wo: -re, vo: -re}
     
+    @always_inline("nodebug")
+    fn __init__(wo: Self.Coef, vo: Self.Coef) -> Self:
+        return Self{wo: wo, vo: vo}
+
     @always_inline("nodebug")
     fn __init__(wo: Self.Coef, po: Self.Coef, vo: Self.Coef) -> Self:
         return Self{wo: wo-po, vo: vo-po}
