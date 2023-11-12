@@ -1,69 +1,74 @@
 import benchmark
 
-alias fib_loops = 1000
-alias fib_n = 50
-
-alias fac_loops = 100
-alias fac_n = 30
-
-
 
 fn main():
+    from random import random_si64
     from monums.sequences import fibonacci, factorial_gamma, factorial_stirling, factorial_slow
 
+    alias fib_loops = 1000
+    let fib: Int = random_si64(49,51).value
+
+    alias fac_loops = 100
+    let fac: Int = random_si64(29,31).value
+
+    @parameter
     fn fib_gen():
         for i in range(fib_loops):
-            benchmark.keep(fibonacci(fib_n))
+            let o = fibonacci(fib)
+            benchmark.keep(o)
 
+    @parameter
     fn fib_hard():
         for i in range(fib_loops):
-            benchmark.keep(hard_fibonacci(fib_n))
+            let o = fibonacci_hard(fib)
+            benchmark.keep(o)
 
+    @parameter
     fn fib_rewo():
         for i in range(fib_loops):
-            benchmark.keep(fibonacci_rewo(fib_n).re)
+            var o = fibonacci_rewo(fib)
+            benchmark.keep(o)
 
+    @parameter
     fn fib_wovo():
         for i in range(fib_loops):
-            benchmark.keep(fibonacci_rewo(fib_n).wo)
+            var o = fibonacci_rewo(fib)
+            benchmark.keep(o)
 
+    @parameter
     fn fac_gam():
         for i in range(fac_loops):
-            benchmark.keep(factorial_gamma(fac_n))
+            let o = factorial_gamma(fac)
+            benchmark.keep(o)
 
+    @parameter
     fn fac_stir():
         for i in range(fac_loops):
-            benchmark.keep(factorial_stirling(fac_n))
+            let o = factorial_stirling(fac)
+            benchmark.keep(o)
 
+    @parameter
     fn fac_slow():
         for i in range(fac_loops):
-            benchmark.keep(factorial_slow(fac_n))
+            let o = factorial_slow(fac)
+            benchmark.keep(o)
     
-    print("fib_gen")
-    benchmark.run[fib_gen]().print["ns"]()
 
-    print("fib_hard")
-    benchmark.run[fib_hard]().print["ns"]()
-
-    print("fib_rewo")
-    benchmark.run[fib_rewo]().print["ns"]()
-
-    print("fib_wovo")
-    benchmark.run[fib_wovo]().print["ns"]()
-
-    print("fac_gam")
-    benchmark.run[fac_gam]().print["ns"]()
-    
-    print("fac_stir")
-    benchmark.run[fac_stir]().print["ns"]()
-
-    print("fac_slow")
-    benchmark.run[fac_slow]().print["ns"]()
+    print()
+    print("fib_gen  :", benchmark.run[fib_gen]().mean["ns"]())
+    print("fib_hard :", benchmark.run[fib_hard]().mean["ns"]())
+    print("fib_rewo :", benchmark.run[fib_rewo]().mean["ns"]())
+    print("fib_wovo :", benchmark.run[fib_wovo]().mean["ns"]())
+    print()
+    print("fac_gam  :", benchmark.run[fac_gam]().mean["ns"]())
+    print("fac_stir :",benchmark.run[fac_stir]().mean["ns"]())
+    print("fac_slow :",benchmark.run[fac_slow]().mean["ns"]())
+    print()
 
 
 
 
-fn hard_fibonacci(iterations: Int) -> Int:
+fn fibonacci_hard(iterations: Int) -> Int:
     var _n0: Int = 0
     var _n1: Int = 1
     for i in range(iterations):
