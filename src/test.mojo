@@ -130,10 +130,13 @@ fn test_seq():
 
 
 fn test_lookup():
-    from monums.sequences import generate_lookup, fibonacci_, factorial
+    from monums.sequences import generate_lookup, fibonacci, factorial
 
-    alias fibonacci_lookup = generate_lookup[Int,fibonacci_,50]()
+    alias fibonacci_lookup = generate_lookup[Int,fibonacci,50]()
     alias factorial_lookup = generate_lookup[Int,factorial,20]()
+
+    print(fibonacci(5))
+    print(fibonacci[3,3](10))
 
     print("\n#--- lookup generation ---#")
     print(fibonacci_lookup[7])

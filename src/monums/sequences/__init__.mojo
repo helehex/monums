@@ -44,20 +44,27 @@ fn generate_lookup[T: AnyType, seq: fn(Int)->T, amount: Int]() -> StaticTuple[am
     return result
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 #------ Recurrent ------#
 #
 alias fibonacci = recurrent[Int,add,0,1]
-alias fibonacci_ = recurrent_[Int,add,0,1] # not ideal, maybe do something else here
 
 @always_inline("nodebug")
 fn add(a: Int, b: Int) -> Int: return a+b
 
 @always_inline("nodebug")
-fn recurrent_[T: AnyType, func: fn(T,T)->T, n0: T, n1: T](iterations: Int) -> T:
-    return recurrent[T, func, n0, n1](iterations)
-
-@always_inline("nodebug")
-fn recurrent[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterations: Int, n0: T = default_n0, n1: T = default_n1) -> T:
+fn recurrent[T: AnyType, func: fn(T,T)->T, df_n0: T, df_n1: T, n0: T = df_n0, n1: T = df_n1](iterations: Int) -> T:
     var _n0: T = n0
     var _n1: T = n1
     for i in range(iterations):
@@ -65,6 +72,33 @@ fn recurrent[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterati
         _n0 = _n1
         _n1 = _n2
     return _n1
+
+
+
+
+# @always_inline("nodebug")
+# fn recurrent[T: AnyType, func: fn(T,T)->T, n0: T, n1: T](iterations: Int) -> T:
+#     return recurrent[T, func](iterations, n0, n1)
+
+# @always_inline("nodebug")
+# fn recurrent[T: AnyType, func: fn(T,T)->T](iterations: Int, n0: T, n1: T) -> T:
+#     var _n0: T = n0
+#     var _n1: T = n1
+#     for i in range(iterations):
+#         let _n2: T = func(_n0, _n1)
+#         _n0 = _n1
+#         _n1 = _n2
+#     return _n1
+
+# @always_inline("nodebug")
+# fn recurrent[T: AnyType, func: fn(T,T)->T, default_n0: T, default_n1: T](iterations: Int, n0: T = default_n0, n1: T = default_n1) -> T:
+#     var _n0: T = n0
+#     var _n1: T = n1
+#     for i in range(iterations):
+#         let _n2: T = func(_n0, _n1)
+#         _n0 = _n1
+#         _n1 = _n2
+#     return _n1
 
 
 #------ Factorial ------#
