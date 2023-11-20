@@ -10,37 +10,51 @@ fn main():
 
     @parameter
     fn fib_gen():
-        let o = fibonacci(fib)
+        var o = fibonacci(fib)
+        benchmark.keep(o)
+        o = fibonacci(fib)
         benchmark.keep(o)
 
     @parameter
     fn fib_hard():
-        let o = fibonacci_hard(fib)
+        var o = fibonacci_hard(fib)
+        benchmark.keep(o)
+        o = fibonacci_hard(fib)
         benchmark.keep(o)
 
     @parameter
     fn fib_rewo():
         var o = fibonacci_rewo(fib)
         benchmark.keep(o)
+        o = fibonacci_rewo(fib)
+        benchmark.keep(o)
 
     @parameter
     fn fib_wovo():
-        var o = fibonacci_rewo(fib)
+        var o = fibonacci_wovo(fib)
+        benchmark.keep(o)
+        o = fibonacci_wovo(fib)
         benchmark.keep(o)
 
     @parameter
     fn fac_gam():
-        let o = factorial_gamma(fac)
+        var o = factorial_gamma(fac)
+        benchmark.keep(o)
+        o = factorial_gamma(fac)
         benchmark.keep(o)
 
     @parameter
     fn fac_stir():
-        let o = factorial_stirling(fac)
+        var o = factorial_stirling(fac)
+        benchmark.keep(o)
+        o = factorial_stirling(fac)
         benchmark.keep(o)
 
     @parameter
     fn fac_slow():
-        let o = factorial_slow(fac)
+        var o = factorial_slow(fac)
+        benchmark.keep(o)
+        o = factorial_slow(fac)
         benchmark.keep(o)
 
     print()
