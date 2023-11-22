@@ -136,6 +136,13 @@ fn test_seq():
     print(simplicial(3,0), simplicial(3,1), simplicial(3,2), simplicial(3,3), simplicial(3,4), simplicial(3,5))
     print()
     print()
+    print("#--- simplicial ---#")
+    for x in range(10):
+        for y in range(10):
+            print_no_newline(String(simplicial(x, y)) + " ")
+        print()
+    print()
+    print()
     print("#--- pascal ---#")
     for x in range(10):
         for y in range(10):
