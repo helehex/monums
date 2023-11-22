@@ -98,7 +98,8 @@ fn test_ESIMD_wovo():
     print("a-b =", (a-b).str_())
     print("a*b =", (a*b).str_())
     print("a//b =", (a//b).str_()) # im not entirely sure
-    print("\nshould be equal, bug? literal wovo works with very similar code and the same math")
+    print()
+    print("should be equal, bug? literal wovo works with very similar code and the same math")
     print((a*a).str_(), "=", ((a*a*b) // b).str_()) # still not entirely sure
     print()
 
@@ -108,24 +109,48 @@ fn test_ESIMD_wovo():
 fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
 fn test_seq():
-    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent
+    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent, simplicial, pascal
 
-    alias n_fac = 10
-    print("\n#--- factorial(" + String(n_fac) + ") ---#")
-    print("lit      =", factorial(n_fac))
+    print()
+    print("#--- factorial(10) = 3628800 ---#")
+    print("literal  =", factorial(10))
+    print("int      =", factorial(Int(10)))
     print("gamma    =", factorial_gamma(10))
     print("stirling =", factorial_stirling(10))
     print("slow     =", factorial_slow(10))
-
-    print("\n\n#--- fibonacci from recurrent ---#")
-    for i in range(10):
-        print_no_newline(String(fibonacci(i)) + ", ")
     print()
-
-    print("\n\n#--- eisenstein fibonacci from recurrent ---#")
+    print()
+    print("#--- triangle numbers ---#")
+    for i in range(10): print_no_newline(String(simplicial[2](i)) + " ")
+    print()
+    for i in range(10): print_no_newline(String(simplicial(2, i)) + " ")
+    print()
+    print(simplicial(2,0), simplicial(2,1), simplicial(2,2), simplicial(2,3), simplicial(2,4), simplicial(2,5))
+    print()
+    print()
+    print("#--- tetrahedral numbers ---#")
+    for i in range(10): print_no_newline(String(simplicial[3](i)) + " ")
+    print()
+    for i in range(10): print_no_newline(String(simplicial(3, i)) + " ")
+    print()
+    print(simplicial(3,0), simplicial(3,1), simplicial(3,2), simplicial(3,3), simplicial(3,4), simplicial(3,5))
+    print()
+    print()
+    print("#--- pascal ---#")
+    for x in range(10):
+        for y in range(10):
+            print_no_newline(String(pascal(x, y)) + " ")
+        print()
+    print()
+    print()
+    print("#--- fibonacci from recurrent ---#")
+    for i in range(10): print_no_newline(String(fibonacci(i)) + ", ")
+    print()
+    print()
+    print()
+    print("#--- eisenstein fibonacci from recurrent ---#")
     alias fibonacci_eisenstein = recurrent[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]
-    for i in range(20):
-        fibonacci_eisenstein(i).print_()
+    for i in range(20): fibonacci_eisenstein(i).print_()
     print()
 
 
@@ -136,7 +161,7 @@ fn test_lookup():
     alias factorial_lookup = generate_lookup[Int,factorial,20]()
 
     print(fibonacci(5))
-    print(fibonacci[3,3](10))
+    print(fibonacci[n0 = 3, n1 = 3](5))
 
     print("\n#--- lookup generation ---#")
     print(fibonacci_lookup[7])

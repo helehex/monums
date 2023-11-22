@@ -46,7 +46,7 @@ fn generate_lookup[T: AnyType, seq: fn(Int)->T, amount: Int]() -> StaticTuple[am
 
 #------ Recurrent ------#
 #
-alias fibonacci = recurrent[Int,add,0,1]
+alias fibonacci = recurrent[Int,add, df_n0 = 0, df_n1 = 1]
 
 @always_inline("nodebug")
 fn add(a: Int, b: Int) -> Int: return a+b
@@ -64,21 +64,22 @@ fn recurrent[T: AnyType, func: fn(T,T)->T, df_n0: T, df_n1: T, n0: T = df_n0, n1
 
 #------ Factorial ------#
 #
+@always_inline
 fn factorial_slow(n: Int) -> Float64:
     var result: Float64 = 0
     for i in range(2, n+1): result += log(Float64(i))
     return exp(result)
 
+@always_inline
 fn factorial_stirling(n: Float64) -> Float64:
     return sqrt(tau*n)*((n/e)**n)
 
+@always_inline
 fn factorial_gamma(n: Float64) -> Float64:
     return tgamma(n + 1.0)
 
-fn factorial[n: IntLiteral]() -> IntLiteral:
-    return factorial_literal(n)
-
-fn factorial_literal(n: IntLiteral) -> IntLiteral:
+@always_inline
+fn factorial(n: IntLiteral) -> IntLiteral:
     var result: IntLiteral = 1
     var i: IntLiteral = 2
     while i < n+1:
@@ -86,6 +87,7 @@ fn factorial_literal(n: IntLiteral) -> IntLiteral:
         i += 1
     return result
 
+@always_inline
 fn factorial(n: Int) -> Int:
     var result: Int = 1
     for i in range(2, n+1): result *= i
@@ -94,15 +96,25 @@ fn factorial(n: Int) -> Int:
 
 #------ Permutial ------#
 #
-fn permutial[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
-    alias start = (n-r) + 1
+# n!/(n-r)!
+#
+@always_inline
+fn permutial(n: IntLiteral, r: IntLiteral) -> IntLiteral:
     var result: IntLiteral = 1
-    var i: IntLiteral = start
+    var i: IntLiteral = (n-r) + 1
     while i < n+1:
         result *= i
         i += 1
     return result
 
+@always_inline
+fn permutial[r: Int](n: Int) -> Int:
+    var result: Int = 1
+    @unroll
+    for i in range(-r+1, 1): result *= n+i
+    return result
+
+@always_inline
 fn permutial(n: Int, r: Int) -> Int:
     var result: Int = 1
     for i in range((n-r)+1, n+1): result *= i
@@ -111,17 +123,63 @@ fn permutial(n: Int, r: Int) -> Int:
 
 #------ Simplicial ------#
 #
-fn simplicial[d: IntLiteral, n: IntLiteral]() -> IntLiteral:
-    return permutial[n, d]()//factorial[d]()
+# justified pascal
+# (n+d)! / d!n!
+#
+@always_inline
+fn simplicial(d: IntLiteral, n: IntLiteral) -> IntLiteral:
+    return permutial(n + d, d)//factorial(d)
 
+@always_inline
+fn simplicial[d: Int](n: Int) -> Int:
+    return permutial[d](n + d)//factorial(d)
+
+@always_inline
 fn simplicial(d: Int, n: Int) -> Int:
-    return permutial(n, d)//factorial(d)
+    return permutial(n + d, d)//factorial(d)
 
 
 #------ Pascal ------#
 #
-fn pascal[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
-    return permutial[n, r]()//factorial[r]()
+# n! / r!(n-r)!
+#
+@always_inline
+fn pascal(n: IntLiteral, r: IntLiteral) -> IntLiteral:
+    return permutial(n, r)//factorial(r)
 
+@always_inline
+fn pascal[n: Int](r: Int) -> Int:
+    return permutial[n](r)//factorial(r)
+
+@always_inline
 fn pascal(n: Int, r: Int) -> Int:
     return permutial(n, r)//factorial(r)
+
+
+#------ Prime ------#
+#
+
+#------ Mersenne ------#
+#
+
+#------ Divisor ------#
+#
+@always_inline
+fn gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral:
+    var _a: IntLiteral = a
+    var _b: IntLiteral = b
+    while _b != 0:
+        let _c: IntLiteral = a % b
+        _a = _b
+        _b = _c
+    return _a
+
+@always_inline
+fn gcd(a: IntLiteral, b: IntLiteral) -> IntLiteral:
+    var _a: IntLiteral = a
+    var _b: IntLiteral = b
+    while _b != 0:
+        let _c: IntLiteral = a % b
+        _a = _b
+        _b = _c
+    return _a
