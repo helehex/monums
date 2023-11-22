@@ -28,7 +28,12 @@ fn factorial_gamma(n: Float64) -> Float64:
 
 @always_inline
 fn factorial[n: IntLiteral]() -> IntLiteral:
-    alias result: IntLiteral = factorial(n)
+    alias result: IntLiteral = factorial(n) # check: alias is probably unecessary, compiler can run at compile time regardless. maybe all these fn's are unecessary, but they do allow very explicit use.
+    return result
+
+@always_inline
+fn factorial[n: Int]() -> Int:
+    alias result: Int = factorial(n)
     return result
 
 @always_inline
@@ -51,6 +56,18 @@ fn factorial(n: Int) -> Int:
 #
 # n! / (n-r)!
 #
+alias nPr: fn(Int,Int)->Int = permutial
+
+@always_inline
+fn permutial[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
+    alias result: IntLiteral = permutial(n, r)
+    return result
+
+@always_inline
+fn permutial[n: Int, r: Int]() -> Int:
+    alias result: Int = permutial(n, r)
+    return result
+
 @always_inline
 fn permutial(n: IntLiteral, r: IntLiteral) -> IntLiteral:
     var i      : IntLiteral = n-r+1
@@ -84,6 +101,16 @@ fn permutial(n: Int, r: Int) -> Int:
 # (d+n)! / n!
 #
 @always_inline
+fn supertial[d: IntLiteral, n: IntLiteral]() -> IntLiteral:
+    alias result: IntLiteral = supertial(d, n)
+    return result
+
+@always_inline
+fn supertial[d: Int, n: Int]() -> Int:
+    alias result: Int = supertial(d, n)
+    return result
+
+@always_inline
 fn supertial(d: IntLiteral, n: IntLiteral) -> IntLiteral:
     var i      : IntLiteral = n+1
     let end    : IntLiteral = n+d+1
@@ -111,28 +138,22 @@ fn supertial(d: Int, n: Int) -> Int:
     return result
 
 
-#------ Simplicial ------#
-#
-# justified pascal
-# (d+n)! / d!n!
-#
-@always_inline
-fn simplicial(d: IntLiteral, n: IntLiteral) -> IntLiteral:
-    return supertial(d, n)//factorial(d)
-
-@always_inline
-fn simplicial[d: Int](n: Int) -> Int:
-    return supertial[d](n)//factorial(d)
-
-@always_inline
-fn simplicial(d: Int, n: Int) -> Int:
-    return supertial(d, n)//factorial(d)
-
-
 #------ Pascal ------#
 #
 # n! / (n-r)!r!
 #
+alias nCr: fn(Int,Int)->Int = pascal
+
+@always_inline
+fn pascal[n: IntLiteral, r: IntLiteral]() -> IntLiteral:
+    alias result: IntLiteral = pascal(n, r)
+    return result
+
+@always_inline
+fn pascal[n: Int, r: Int]() -> Int:
+    alias result: Int = pascal(n, r)
+    return result
+
 @always_inline
 fn pascal(n: IntLiteral, r: IntLiteral) -> IntLiteral:
     return permutial(n, r)//factorial(r)
@@ -144,3 +165,34 @@ fn pascal[n: Int](r: Int) -> Int:
 @always_inline
 fn pascal(n: Int, r: Int) -> Int:
     return permutial(n, r)//factorial(r)
+
+
+#------ Simplicial ------#
+#
+# justified pascal
+# (d+n)! / d!n!
+#
+# alias ntri = simplicial[2]  #  <--- parser crash
+# alias ntet = simplicial[3]
+
+@always_inline
+fn simplicial[d: IntLiteral, n: IntLiteral]() -> IntLiteral:
+    alias result: IntLiteral = simplicial(d, n)
+    return result
+
+@always_inline
+fn simplicial[d: Int, n: Int]() -> Int:
+    alias result: Int = simplicial(d, n)
+    return result
+
+@always_inline
+fn simplicial(d: IntLiteral, n: IntLiteral) -> IntLiteral:
+    return supertial(d, n)//factorial(d)
+
+@always_inline
+fn simplicial[d: Int](n: Int) -> Int:
+    return supertial[d](n)//factorial(d)
+
+@always_inline
+fn simplicial(d: Int, n: Int) -> Int:
+    return supertial(d, n)//factorial(d)
