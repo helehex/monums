@@ -1,4 +1,5 @@
 from monums import LitIntE_rewo, LitIntE_wovo, IntE_rewo, IntE_wovo, ESIMD_rewo, ESIMD_wovo
+from monums.discrete import Discrete
 from sys import argv
 
 
