@@ -79,6 +79,11 @@ fn factorial_gamma(n: Float64) -> Float64:
     return tgamma(n + 1.0)
 
 @always_inline
+fn factorial[n: IntLiteral]() -> IntLiteral:
+    alias result: IntLiteral = factorial(n)
+    return result
+
+@always_inline
 fn factorial(n: IntLiteral) -> IntLiteral:
     var result: IntLiteral = 1
     var i: IntLiteral = 2
@@ -116,6 +121,33 @@ fn permutial[r: Int](n: Int) -> Int:
 
 @always_inline
 fn permutial(n: Int, r: Int) -> Int:
+    var result: Int = 1
+    for i in range((n-r)+1, n+1): result *= i
+    return result
+
+
+#------ Supertial ------#
+#
+# (n+d)! / n!
+#
+@always_inline
+fn supertial(n: IntLiteral, r: IntLiteral) -> IntLiteral:
+    var result: IntLiteral = 1
+    var i: IntLiteral = (n-r) + 1
+    while i < n+1:
+        result *= i
+        i += 1
+    return result
+
+@always_inline
+fn supertial[r: Int](n: Int) -> Int:
+    var result: Int = 1
+    @unroll
+    for i in range(-r+1, 1): result *= n+i
+    return result
+
+@always_inline
+fn supertial(n: Int, r: Int) -> Int:
     var result: Int = 1
     for i in range((n-r)+1, n+1): result *= i
     return result
@@ -165,21 +197,11 @@ fn pascal(n: Int, r: Int) -> Int:
 #------ Divisor ------#
 #
 @always_inline
-fn gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral:
-    var _a: IntLiteral = a
-    var _b: IntLiteral = b
-    while _b != 0:
-        let _c: IntLiteral = a % b
-        _a = _b
-        _b = _c
-    return _a
-
-@always_inline
 fn gcd(a: IntLiteral, b: IntLiteral) -> IntLiteral:
     var _a: IntLiteral = a
     var _b: IntLiteral = b
     while _b != 0:
-        let _c: IntLiteral = a % b
+        let _c: IntLiteral = _a % _b
         _a = _b
         _b = _c
     return _a
