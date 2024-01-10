@@ -26,12 +26,12 @@ fn factorial_stirling(n: Float64) -> Float64:
 fn factorial_gamma(n: Float64) -> Float64:
     return tgamma(n + 1.0)
 
-@always_inline
+@always_inline # shortcut of using your own alias, probably unnecessary
 fn factorial[n: IntLiteral]() -> IntLiteral:
-    alias result: IntLiteral = factorial(n) # check: alias is probably unecessary, compiler can run at compile time regardless. maybe all these fn's are unecessary, but they do allow very explicit use.
+    alias result: IntLiteral = factorial(n)
     return result
 
-@always_inline
+@always_inline # shortcut of using your own alias, probably unnecessary
 fn factorial[n: Int]() -> Int:
     alias result: Int = factorial(n)
     return result
@@ -172,7 +172,7 @@ fn pascal(n: Int, r: Int) -> Int:
 # justified pascal
 # (d+n)! / d!n!
 #
-# alias ntri = simplicial[2]  #  <--- parser crash
+# alias ntri: fn(Int)->Int = simplicial[2]  #  <--- parser crash
 # alias ntet = simplicial[3]
 
 @always_inline
