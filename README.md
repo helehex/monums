@@ -1,6 +1,8 @@
 # Monums
 Strange numbers for Mojo🔥.
 
+Mojo version 0.6.1
+
 # Package Layout
 - monums.sequences
     - integer sequences
