@@ -26,7 +26,6 @@ fn main():
 
 
 
-
 fn test_LitIntE_rewo():
     alias a: LitIntE_rewo = LitIntE_rewo(4,0,20)
     alias b: LitIntE_rewo = LitIntE_rewo(2,0,4)
@@ -35,15 +34,15 @@ fn test_LitIntE_rewo():
     print()
     print("#------ rewo Literal Test ------#")
     print()
-    print("a =", a.str_())
-    print("b =", b.str_())
+    print("a =", a)
+    print("b =", b)
     print()
-    print("a+b =", (a+b).str_())
-    print("a-b =", (a-b).str_())
-    print("a*b =", (a*b).str_())
-    print("a//b =", (a//b).str_())
-    print((a*a).str_po(), "=", ((a*a*b) // b).str_())
-    print("c*c // c =", ((c*c) // c).str_(), "=", c.str_())
+    print("a+b =", a+b)
+    print("a-b =", a-b)
+    print("a*b =", a*b)
+    print("a//b =", a//b)
+    print(a*a, "=", (a*a*b) // b)
+    print("c*c // c =", (c*c) // c, "=", c)
     print()
 
 
@@ -55,15 +54,15 @@ fn test_ESIMD_rewo():
     print()
     print("#------ rewo SIMD Test ------#")
     print()
-    print("a =", a.str_())
-    print("b =", b.str_())
+    print("a =", a)
+    print("b =", b)
     print()
-    print("a+b =", (a+b).str_())
-    print("a-b =", (a-b).str_())
-    print("a*b =", (a*b).str_())
-    print("a//b =", (a//b).str_())
-    print((a*a).str_(), "=", ((a*a*b) // b).str_())
-    print("c*c // c =", ((c*c) // c).str_(), "!=", c.str_()) # optimized away my entire existence
+    print("a+b =", a+b)
+    print("a-b =", a-b)
+    print("a*b =", a*b)
+    print("a//b =", a//b)
+    print(a*a, "=", (a*a*b) // b)
+    print("c*c // c =", (c*c) // c, "!=", c)
     print()
 
 
@@ -74,14 +73,14 @@ fn test_LitIntE_wovo():
     print()
     print("#------ wovo Literal Test ------#")
     print()
-    print("a =", a.str_())
-    print("b =", b.str_())
+    print("a =", a)
+    print("b =", b)
     print()
-    print("a+b =", (a+b).str_())
-    print("a-b =", (a-b).str_())
-    print("a*b =", (a*b).str_())
-    print("a//b =", (a//b).str_())
-    print((a*a).str_(), "=", ((a*a*b) // b).str_())
+    print("a+b =", a+b)
+    print("a-b =", a-b)
+    print("a*b =", a*b)
+    print("a//b =", a//b)
+    print(a*a, "=", (a*a*b) // b)
     print()
 
 
@@ -92,16 +91,15 @@ fn test_ESIMD_wovo():
     print()
     print("#------ wovo SIMD Test ------#")
     print()
-    print("a =", a.str_())
-    print("b =", b.str_())
+    print("a =", a)
+    print("b =", b)
     print()
-    print("a+b =", (a+b).str_())
-    print("a-b =", (a-b).str_())
-    print("a*b =", (a*b).str_())
-    print("a//b =", (a//b).str_()) # im not entirely sure
-    print()
-    print("should be equal, bug? literal wovo works with very similar code and the same math")
-    print((a*a).str_(), "=", ((a*a*b) // b).str_()) # still not entirely sure
+    print("a+b =", a+b)
+    print("a-b =", a-b)
+    print("a*b =", a*b)
+    print(a*b.conj(), (a*b.conj()).str_wovo(), b.wo*b.wo + b.vo*b.vo - b.wo*b.vo)
+    print("a//b =", a//b)
+    print(a*a, "=", (a*a*b) // b, "   <-- this is a bug with simd floor division")
     print()
 
 
@@ -165,6 +163,7 @@ fn test_seq():
 fn test_lookup():
     from monums.sequences import generate_lookup, fibonacci, factorial
 
+    # alias fibonacci_lookup = generate_lookup[Int,fibonacci,50]() # default parameters not used to allow type check
     alias fibonacci_lookup = generate_lookup[Int,fibonacci[0,1],50]()
     alias factorial_lookup = generate_lookup[Int,factorial,20]()
 
