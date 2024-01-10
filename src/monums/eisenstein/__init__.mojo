@@ -1,3 +1,5 @@
+# eisenstein may get moved to moplex
+
 # Eisenstein integers:
 
 #
@@ -36,7 +38,7 @@ alias IntE_rewo = ESIMD_rewo[DType.index,1]
 @value
 @nonmaterializable(IntE_rewo)
 @register_passable("trivial")
-struct LitIntE_rewo:
+struct LitIntE_rewo(Stringable):
 
     #------[ Alias ]------#
     #
@@ -144,6 +146,10 @@ struct LitIntE_rewo:
     #------( Formatting )------#
     #
     @always_inline("nodebug")
+    fn __str__(self) -> String:
+        return self.str_()
+
+    @always_inline("nodebug")
     fn str_rewo(self) -> String:
         return String(self.re) + "re + " + String(self.wo) + "wo"
     
@@ -178,7 +184,7 @@ struct LitIntE_rewo:
 
 @value
 @register_passable("trivial")
-struct ESIMD_rewo[dt: DType, sw: Int]:
+struct ESIMD_rewo[dt: DType, sw: Int](Stringable):
 
     #------[ Alias ]------#
     #
@@ -308,15 +314,19 @@ struct ESIMD_rewo[dt: DType, sw: Int]:
     #------( Formatting )------#
     #
     @always_inline("nodebug")
-    fn str_wovo[seperator: String = "\n"](self) -> String:
+    fn __str__(self) -> String:
+        return self.str_()
+
+    @always_inline("nodebug")
+    fn str_rewo[seperator: String = "\n"](self) -> String:
         @parameter
         if sw == 1:
-            return String(self.wo) + "wo + " + String(self.wo) + "vo"
+            return String(self.re) + "wo + " + String(self.wo) + "vo"
         
         var result: String = ""
         @unroll
-        for i in range(sw - 1): result += self[i].str_wovo() + seperator
-        return result + self[sw - 1].str_wovo()
+        for i in range(sw - 1): result += self[i].str_rewo() + seperator
+        return result + self[sw - 1].str_rewo()
             
     @always_inline("nodebug")
     fn str_po[seperator: String = "\n"](self) -> String:
@@ -345,8 +355,8 @@ struct ESIMD_rewo[dt: DType, sw: Int]:
         return self.str_po[seperator]()
 
     @always_inline("nodebug")
-    fn print_wovo[seperator: String = "\n"](self):
-        print(self.str_wovo[seperator]())
+    fn print_rewo[seperator: String = "\n"](self):
+        print(self.str_rewo[seperator]())
 
     @always_inline("nodebug")
     fn print_po[seperator: String = "\n"](self):
@@ -371,7 +381,7 @@ alias IntE_wovo = ESIMD_wovo[DType.index,1]
 @value
 @nonmaterializable(IntE_wovo)
 @register_passable("trivial")
-struct LitIntE_wovo:
+struct LitIntE_wovo(Stringable):
 
     #------[ Alias ]------#
     #
@@ -477,8 +487,12 @@ struct LitIntE_wovo:
     #------( Formatting )------#
     #
     @always_inline("nodebug")
+    fn __str__(self) -> String:
+        return self.str_()
+
+    @always_inline("nodebug")
     fn str_wovo(self) -> String:
-        return String(self.wo) + "wo + " + String(self.wo) + "vo"
+        return String(self.wo) + "wo + " + String(self.vo) + "vo"
     
     @always_inline("nodebug")
     fn str_po(self) -> String:
@@ -513,7 +527,7 @@ struct LitIntE_wovo:
 
 @value
 @register_passable("trivial")
-struct ESIMD_wovo[dt: DType, sw: Int]:
+struct ESIMD_wovo[dt: DType, sw: Int](Stringable):
 
     #------[ Alias ]------#
     #
@@ -582,6 +596,14 @@ struct ESIMD_wovo[dt: DType, sw: Int]:
         return Self(a.vo*b.vo - c, a.wo*b.wo - c)
 
     @always_inline("nodebug")
+    fn __truediv__(a: Self, b: Self.Coef) -> Self:
+        return Self(a.wo/b, a.vo/b)
+    
+    @always_inline("nodebug")
+    fn __truediv__(a: Self, b: Self) -> Self:
+        return (a*b.conj()) / (b.wo*b.wo + b.vo*b.vo - b.wo*b.vo)
+
+    @always_inline("nodebug")
     fn __floordiv__(a: Self, b: Self.Coef) -> Self:
         return Self(a.wo//b, a.vo//b)
     
@@ -640,10 +662,14 @@ struct ESIMD_wovo[dt: DType, sw: Int]:
     #------( Formatting )------#
     #
     @always_inline("nodebug")
+    fn __str__(self) -> String:
+        return self.str_()
+
+    @always_inline("nodebug")
     fn str_wovo[seperator: String = "\n"](self) -> String:
         @parameter
         if sw == 1:
-            return String(self.wo) + "wo + " + String(self.wo) + "vo"
+            return String(self.wo) + "wo + " + String(self.vo) + "vo"
         
         var result: String = ""
         @unroll
