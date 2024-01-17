@@ -14,13 +14,13 @@ fn main():
     if len(args) > 1 and args[1] == "temp":
         pass
 
-    if len(args) == 1 or args[1] == "eis":
+    if len(args) < 2 or args[1] == "eis":
         test_LitIntE_rewo()
         test_ESIMD_rewo()
         test_LitIntE_wovo()
         test_ESIMD_wovo()
 
-    if len(args) == 1 or args[1] == "seq":
+    if len(args) < 2 or args[1] == "seq":
         test_seq()
         test_lookup()
 
@@ -108,7 +108,7 @@ fn test_ESIMD_wovo():
 fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
 fn test_seq():
-    from monums.sequences import factorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent, simplicial, pascal
+    from monums.sequences import factorial, multifactorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent, simplicial, pascal
 
     print()
     print("#--- factorial(10) = 3628800 ---#")
@@ -117,6 +117,11 @@ fn test_seq():
     print("gamma    =", factorial_gamma(10))
     print("stirling =", factorial_stirling(10))
     print("slow     =", factorial_slow(10))
+    print()
+    print()
+    print("#--- double_factorial(10) = 3840 ---#")
+    print("literal  =", multifactorial[2](10))
+    print("int      =", multifactorial[2](Int(10)))
     print()
     print()
     print("#--- triangle numbers ---#")
@@ -161,14 +166,18 @@ fn test_seq():
 
 
 fn test_lookup():
-    from monums.sequences import generate_lookup, fibonacci, factorial
+    from monums.sequences import generate_lookup, fibonacci, factorial, multifactorial
 
     # alias fibonacci_lookup = generate_lookup[Int,fibonacci,50]() # default parameters not used to allow type check
-    alias fibonacci_lookup = generate_lookup[Int,fibonacci[0,1],50]()
+    alias fibonacci_lookup = generate_lookup[Int,fibonacci,50]()
     alias factorial_lookup = generate_lookup[Int,factorial,20]()
 
     print(fibonacci(5))
-    print(fibonacci[3,3](5))
+    print()
+    print(fibonacci[3,3](0))
+    print(fibonacci[3,3](1))
+    print(fibonacci[3,3](2))
+    print(fibonacci[3,3](3))
 
     print("\n#--- lookup generation ---#")
     print(fibonacci_lookup[7])

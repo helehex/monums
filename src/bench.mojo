@@ -1,12 +1,16 @@
 import benchmark
 
 
+
+
 fn main():
     from random import random_si64
-    from monums.sequences import fibonacci, factorial_gamma, factorial_stirling, factorial_slow
+    from monums.sequences import fibonacci, factorial, factorial_gamma, factorial_stirling, factorial_slow
+
+    alias lfac: Int = 20
 
     let fib: Int = random_si64(50,50).value
-    let fac: Int = random_si64(30,30).value
+    let fac: Int = random_si64(lfac,lfac).value
 
     @parameter
     fn fib_gen():
@@ -43,17 +47,33 @@ fn main():
         var o = factorial_slow(fac)
         benchmark.keep(o)
 
-    print()
-    print("fib_gen  :", benchmark.run[fib_gen](max_runtime_secs = 1.0).mean("ns")) # measuring the general vs. hard coded fibonacci is acting wierd
-    print("fib_gen  :", benchmark.run[fib_gen](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_hard :", benchmark.run[fib_hard](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_hard :", benchmark.run[fib_hard](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_rewo :", benchmark.run[fib_rewo](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_wovo :", benchmark.run[fib_wovo](max_runtime_secs = 1.0).mean("ns"))
+    @parameter
+    fn fac_int():
+        let o = factorial(fac)
+        benchmark.keep(o)
+
+    @parameter
+    fn fac_lit():
+        let o = factorial[lfac]()
+        benchmark.keep(o)
+
+    @parameter
+    fn fac_lit2():
+        let o = factorial(lfac)
+        benchmark.keep(o)
+
     print()
     print("fac_gam  :", benchmark.run[fac_gam](max_runtime_secs = 1.0).mean("ns"))
     print("fac_stir :", benchmark.run[fac_stir](max_runtime_secs = 1.0).mean("ns"))
     print("fac_slow :", benchmark.run[fac_slow](max_runtime_secs = 1.0).mean("ns"))
+    print("fac_int  :", benchmark.run[fac_int](max_runtime_secs = 1.0).mean("ns"))
+    print("fac_lit  :", benchmark.run[fac_lit](max_runtime_secs = 1.0).mean("ns"))
+    print("fac_lit2 :", benchmark.run[fac_lit2](max_runtime_secs = 1.0).mean("ns"))
+    print()
+    print("fib_hard :", benchmark.run[fib_hard](max_runtime_secs = 1.0).mean("ns"))
+    print("fib_gen  :", benchmark.run[fib_gen](max_runtime_secs = 1.0).mean("ns"))
+    print("fib_rewo :", benchmark.run[fib_rewo](max_runtime_secs = 1.0).mean("ns"))
+    print("fib_wovo :", benchmark.run[fib_wovo](max_runtime_secs = 1.0).mean("ns"))
     print()
 
 
