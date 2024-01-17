@@ -10,7 +10,10 @@ from .lookup import generate_lookup
 
 #alias fibonacci = recurrent[Int,add, df_n0 = 0, df_n1 = 1]
 
-fn fibonacci[n0: Int = 0, n1: Int = 1](iterations: Int) -> Int:
+fn fibonacci(iterations: Int) -> Int:
+    return recurrent[Int,add,0,1](iterations)
+
+fn fibonacci[n0: Int, n1: Int](iterations: Int) -> Int:
     return recurrent[Int,add,n0,n1](iterations)
 
 @always_inline("nodebug")
