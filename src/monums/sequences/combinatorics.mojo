@@ -26,29 +26,58 @@ fn factorial_stirling(n: Float64) -> Float64:
 fn factorial_gamma(n: Float64) -> Float64:
     return tgamma(n + 1.0)
 
+@always_inline
+fn factorial[n: IntLiteral]() -> IntLiteral: return multifactorial[1,n]()
+
+@always_inline
+fn factorial[n: Int]() -> Int: return multifactorial[1,n]()
+
+@always_inline
+fn factorial(n: IntLiteral) -> IntLiteral: return multifactorial[1](n)
+
+@always_inline
+fn factorial(n: Int) -> Int: return multifactorial[1](n)
+
+@always_inline
+fn double_factorial[n: IntLiteral]() -> IntLiteral: return multifactorial[2,n]()
+
+@always_inline
+fn double_factorial[n: Int]() -> Int: return multifactorial[2,n]()
+
+@always_inline
+fn double_factorial(n: IntLiteral) -> IntLiteral: return multifactorial[2](n)
+
+@always_inline
+fn double_factorial(n: Int) -> Int: return multifactorial[2](n)
+
 @always_inline # shortcut of using your own alias, probably unnecessary
-fn factorial[n: IntLiteral]() -> IntLiteral:
-    alias result: IntLiteral = factorial(n)
+fn multifactorial[step: IntLiteral, n: IntLiteral]() -> IntLiteral:
+    alias result: IntLiteral = multifactorial[step](n)
     return result
 
 @always_inline # shortcut of using your own alias, probably unnecessary
-fn factorial[n: Int]() -> Int:
-    alias result: Int = factorial(n)
+fn multifactorial[step: Int, n: Int]() -> Int:
+    alias result: Int = multifactorial[step](n)
     return result
 
 @always_inline
-fn factorial(n: IntLiteral) -> IntLiteral:
+fn multifactorial[step: IntLiteral](n: IntLiteral) -> IntLiteral:
+    constrained[step > 0, "factorial step must be greater than 0"]()
     var result: IntLiteral = 1
-    var i: IntLiteral = 2
-    while i < n+1:
+    var i: IntLiteral = n
+    while i > 1:
         result *= i
-        i += 1
+        i -= step
     return result
 
 @always_inline
-fn factorial(n: Int) -> Int:
+fn multifactorial[step: Int](n: Int) -> Int:
+    constrained[step > 0, "factorial step must be greater than 0"]()
     var result: Int = 1
-    for i in range(2, n+1): result *= i
+    var i: Int = n
+    while i > 1:
+        result *= i
+        i -= step
     return result
 
 
