@@ -1,11 +1,11 @@
 import benchmark
-
+from random import random_si64
+from monums.sequences import fibonacci, factorial, factorial_gamma, factorial_stirling, factorial_slow
 
 
 
 fn main():
-    from random import random_si64
-    from monums.sequences import fibonacci, factorial, factorial_gamma, factorial_stirling, factorial_slow
+
 
     alias lfac: Int = 20
 
@@ -14,12 +14,12 @@ fn main():
 
     @parameter
     fn fib_gen():
-        let o = fibonacci(fib)
+        var o = fibonacci(fib)
         benchmark.keep(o)
 
     @parameter
     fn fib_hard():
-        let o = fibonacci_hard(fib)
+        var o = fibonacci_hard(fib)
         benchmark.keep(o)
 
     @parameter

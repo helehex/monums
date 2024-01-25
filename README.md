@@ -1,7 +1,7 @@
 # Monums
 Strange numbers for Mojo🔥.
 
-Mojo version 0.6.1
+Mojo version 0.7.0
 
 # Package Layout
 - monums.sequences

@@ -1,4 +1,5 @@
 from monums import LitIntE_rewo, LitIntE_wovo, IntE_rewo, IntE_wovo, ESIMD_rewo, ESIMD_wovo
+from monums.sequences import factorial, multifactorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent, simplicial, pascal, generate_lookup
 from monums.discrete import Discrete
 from sys import argv
 
@@ -97,9 +98,8 @@ fn test_ESIMD_wovo():
     print("a+b =", a+b)
     print("a-b =", a-b)
     print("a*b =", a*b)
-    print(a*b.conj(), (a*b.conj()).str_wovo(), b.wo*b.wo + b.vo*b.vo - b.wo*b.vo)
     print("a//b =", a//b)
-    print(a*a, "=", (a*a*b) // b, "   <-- this is a bug with simd floor division")
+    print(a*a, "=", (a*a*b) // b)
     print()
 
 
@@ -108,8 +108,6 @@ fn test_ESIMD_wovo():
 fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
 fn test_seq():
-    from monums.sequences import factorial, multifactorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent, simplicial, pascal
-
     print()
     print("#--- factorial(10) = 3628800 ---#")
     print("literal  =", factorial(10))
@@ -166,8 +164,6 @@ fn test_seq():
 
 
 fn test_lookup():
-    from monums.sequences import generate_lookup, fibonacci, factorial, multifactorial
-
     # alias fibonacci_lookup = generate_lookup[Int,fibonacci,50]() # default parameters not used to allow type check
     alias fibonacci_lookup = generate_lookup[Int,fibonacci,50]()
     alias factorial_lookup = generate_lookup[Int,factorial,20]()
