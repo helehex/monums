@@ -1,5 +1,6 @@
 from monums import LitIntE_rewo, LitIntE_wovo, IntE_rewo, IntE_wovo, ESIMD_rewo, ESIMD_wovo
-from monums.sequences import factorial, multifactorial, factorial_gamma, factorial_stirling, factorial_slow, fibonacci, recurrent, simplicial, pascal, generate_lookup
+from monums.sequences import factorial, multifactorial, factorial_gamma, factorial_stirling, factorial_slow, simplicial, pascal, generate_lookup
+from monums.sequences import fibonacci, recurrent, newtons_method
 from monums.discrete import Discrete
 from sys import argv
 
@@ -12,8 +13,8 @@ from sys import argv
 fn main():
     let args: VariadicList[StringRef] = argv()
 
-    if len(args) > 1 and args[1] == "temp":
-        pass
+    if len(args) > 1 and args[1] == "temp": temp()
+    if len(args) > 1 and args[1] == "newt": test_newtons_method()
 
     if len(args) < 2 or args[1] == "eis":
         test_LitIntE_rewo()
@@ -26,7 +27,34 @@ fn main():
         test_lookup()
 
 
+fn temp():
+    print("temp code")
 
+
+
+
+#------ newtons method ------#
+#
+@always_inline
+fn f(x: SIMD) -> SIMD[x.type,x.size]: return x**5
+
+@always_inline
+fn df(x: SIMD) -> SIMD[x.type,x.size]: return 5*x**4
+
+fn test_newtons_method():
+    print("finding quintic roots using newtons method:\n")
+    alias type = DType.float64
+    var inputs = SIMD[type,4](100,200,300,400)
+    var result = newtons_method[type, 4, f[type,4], df[type,4], 128, SIMD[type,1](0.000000000001)](1, inputs)
+    print("[100,200,300,400]**(1/5)")
+    print("= [2.51188643151,      2.88539981181,      3.12913464453,      3.31445401734]")
+    print("=", str(result.value()) if result else "Failed")
+
+
+
+
+#------ eisentein ------#
+#
 fn test_LitIntE_rewo():
     alias a: LitIntE_rewo = LitIntE_rewo(4,0,20)
     alias b: LitIntE_rewo = LitIntE_rewo(2,0,4)
@@ -105,6 +133,8 @@ fn test_ESIMD_wovo():
 
 
 
+#------ sequences ------#
+#
 fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
 
 fn test_seq():
