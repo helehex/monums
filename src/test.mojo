@@ -45,10 +45,10 @@ fn test_newtons_method():
     print("finding quintic roots using newtons method:\n")
     alias type = DType.float64
     var inputs = SIMD[type,4](100,200,300,400)
-    var result = newtons_method[type, 4, f[type,4], df[type,4], 128, SIMD[type,1](0.000000000001)](1, inputs)
+    var result = newtons_method[type, 4, f[type,4], df[type,4], 16, SIMD[type,1](0.001)](inputs*0.01, inputs)
     print("[100,200,300,400]**(1/5)")
     print("= [2.51188643151,      2.88539981181,      3.12913464453,      3.31445401734]")
-    print("=", str(result.value()) if result else "Failed")
+    print("=", str(result))
 
 
 

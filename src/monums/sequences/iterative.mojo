@@ -1,6 +1,6 @@
 from utils.variant import Variant
 from collections import Optional
-from math import abs
+from math import nan, abs, select
 
 
 #------ Newtons Method ------#
@@ -9,32 +9,67 @@ fn newtons_method[
     type: DType,
     size: Int,
     f: fn(SIMD[type,size])->SIMD[type,size],
-    df: fn(SIMD[type,size])->SIMD[type,size],
-    max_iterations: Int = 16,
+    fp: fn(SIMD[type,size])->SIMD[type,size],
+    iterations: Int = 8,
     tolerance: Optional[SIMD[type,1]] = None,
     epsilon: Optional[SIMD[type,1]] = None
-    ](x0: SIMD[type,size], yo: SIMD[type,size]) -> Optional[SIMD[type,size]]:
+    ](x0: SIMD[type,size], yo: SIMD[type,size] = 0) -> SIMD[type,size]:
 
+    """
+    Implements newtons method for solving trancendental equations.\n
+    Converges on the roots of the input function `f` using it's derivative `fp`.\n
+    If `tolerance` and `epsilon` are left undefined, only iterations will be used, and may return non-convergent results.
+
+    Constraints:
+        Parameter `type` must be floating-point.
+
+    Parameters:
+        type: The DType of values used in calculation.
+        size: The SIMD vector size of the values.
+        f: The function to find the solutions to.
+        fp: The first derivative of f (not calculated automatically).
+        iterations: The number of iterations to perform.
+        tolerance: If provided, results within the tolerance will be considered solved.
+        epsilon: If provided, the calculation will return `nan` for values that explode.
+
+    Args:
+        x0: The initial guess of the solution. Determines which solution is found, and how fast it converges.
+        yo: A vertical offset applied to the input function `f`. Use for solving the inverse of `f`, for values other than 0.
+
+    Returns:
+        The converged value, or `nan` if no solution was found.
+    """
+
+    constrained[type.is_floating_point(), "`type` parameter must be a floating-point"]()
+    alias _nan: SIMD[type,size] = nan[type]()
+
+    var completed: SIMD[DType.bool,size] = False
     var x1: SIMD[type,size] = x0
 
-    for i in range(max_iterations):
-        var yp = df(x1)
+    for i in range(iterations):
+        var yp = fp(x1)
 
         @parameter
         if epsilon:
-            if abs(yp).reduce_min() < epsilon.value(): return None
+            var exploded = abs(yp) <= epsilon.value()
+            completed |= exploded
+            x1 = select(exploded, _nan, x1)
         
         var x2 = x1 - (f(x1)-yo)/yp
 
         @parameter
         if tolerance:
-            if abs(x2 - x1).reduce_max() < tolerance.value(): return x1
+            completed |= abs(x2 - x1) <= tolerance.value()
 
-        x1 = x2
+        @parameter
+        if tolerance or epsilon:
+            if completed.reduce_and(): return x1
+
+        x1 = select(completed, x1, x2)
 
     @parameter
-    if tolerance and epsilon: return None
-    else: return x1 
+    if tolerance or epsilon: return select(completed, x1, _nan)
+    return x1
 
 
 #------ Recurrent ------#
