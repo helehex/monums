@@ -1,20 +1,18 @@
 from utils.variant import Variant
 from collections import Optional
-from math import nan, abs, select
+from math import nan, isnan, abs, select
 
 
 #------ Newtons Method ------#
 #
-fn newtons_method[
-    type: DType,
-    size: Int,
+fn newtons_method[type: DType, size: Int,
     f: fn(SIMD[type,size])->SIMD[type,size],
     fp: fn(SIMD[type,size])->SIMD[type,size],
     iterations: Int = 8,
-    tolerance: Optional[SIMD[type,1]] = None,
-    epsilon: Optional[SIMD[type,1]] = None
+    tolerance: FloatLiteral = __mlir_attr.`0x7ff8000000000000:f64`,
+    epsilon: FloatLiteral = __mlir_attr.`0x7ff8000000000000:f64`
     ](x0: SIMD[type,size], yo: SIMD[type,size] = 0) -> SIMD[type,size]:
-
+    
     """
     Implements newtons method for solving trancendental equations.\n
     Converges on the roots of the input function `f` using it's derivative `fp`.\n
@@ -50,25 +48,25 @@ fn newtons_method[
         var yp = fp(x1)
 
         @parameter
-        if epsilon:
-            var exploded = abs(yp) <= epsilon.value()
+        if tolerance == tolerance:
+            var exploded = abs(yp) <= epsilon
             completed |= exploded
             x1 = select(exploded, _nan, x1)
         
         var x2 = x1 - (f(x1)-yo)/yp
 
         @parameter
-        if tolerance:
-            completed |= abs(x2 - x1) <= tolerance.value()
+        if tolerance == tolerance:
+            completed |= abs(x2 - x1) <= tolerance
 
         @parameter
-        if tolerance or epsilon:
+        if tolerance == tolerance or epsilon == epsilon:
             if completed.reduce_and(): return x1
-
-        x1 = select(completed, x1, x2)
+            x1 = select(completed, x1, x2)
+        else: x1 = x2
 
     @parameter
-    if tolerance or epsilon: return select(completed, x1, _nan)
+    if tolerance == tolerance or epsilon == epsilon: return select(completed, x1, _nan)
     return x1
 
 
