@@ -2,16 +2,18 @@ from utils.variant import Variant
 from collections import Optional
 from math import nan, isnan, abs, select
 
+alias NAN: FloatLiteral = __mlir_attr.`0x7ff8000000000000:f64`
+
 
 #------ Newtons Method ------#
 #
 fn newtons_method[type: DType, size: Int,
     f: fn(SIMD[type,size])->SIMD[type,size],
-    fp: fn(SIMD[type,size])->SIMD[type,size],
+    df: fn(SIMD[type,size])->SIMD[type,size],
     iterations: Int = 8,
-    tolerance: FloatLiteral = __mlir_attr.`0x7ff8000000000000:f64`,
-    epsilon: FloatLiteral = __mlir_attr.`0x7ff8000000000000:f64`
-    ](x0: SIMD[type,size], yo: SIMD[type,size] = 0) -> SIMD[type,size]:
+    tolerance: FloatLiteral = NAN,
+    epsilon: FloatLiteral = NAN
+    ](x0: SIMD[type,size], y_offset: SIMD[type,size] = 0) -> SIMD[type,size]:
     
     """
     Implements newtons method for solving trancendental equations.\n
@@ -25,14 +27,14 @@ fn newtons_method[type: DType, size: Int,
         type: The DType of values used in calculation.
         size: The SIMD vector size of the values.
         f: The function to find the solutions to.
-        fp: The first derivative of f (not calculated automatically).
+        df: The first derivative of f (not calculated automatically).
         iterations: The number of iterations to perform.
         tolerance: If provided, results within the tolerance will be considered solved.
         epsilon: If provided, the calculation will return `nan` for values that explode.
 
     Args:
         x0: The initial guess of the solution. Determines which solution is found, and how fast it converges.
-        yo: A vertical offset applied to the input function `f`. Use for solving the inverse of `f`, for values other than 0.
+        y_offset: A vertical offset applied to the input function `f`. Use for solving the inverse of `f`, for values other than 0.
 
     Returns:
         The converged value, or `nan` if no solution was found.
@@ -45,7 +47,7 @@ fn newtons_method[type: DType, size: Int,
     var x1: SIMD[type,size] = x0
 
     for i in range(iterations):
-        var yp = fp(x1)
+        var yp = df(x1)
 
         @parameter
         if tolerance == tolerance:
@@ -53,7 +55,7 @@ fn newtons_method[type: DType, size: Int,
             completed |= exploded
             x1 = select(exploded, _nan, x1)
         
-        var x2 = x1 - (f(x1)-yo)/yp
+        var x2 = x1 - (f(x1)-y_offset)/yp
 
         @parameter
         if tolerance == tolerance:
