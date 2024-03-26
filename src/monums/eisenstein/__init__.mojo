@@ -94,7 +94,7 @@ struct LitIntE_rewo(Stringable):
     
     @always_inline("nodebug")
     fn __mul__(a: Self, b: Self) -> Self:
-        let c: Self.Coef = -(a.wo * b.wo)
+        var c: Self.Coef = -(a.wo * b.wo)
         return Self((a.re * b.re) + c, (a.re * b.wo) + (a.wo * b.re) + c)
     
     @always_inline("nodebug")
@@ -103,8 +103,8 @@ struct LitIntE_rewo(Stringable):
 
     @always_inline("nodebug")
     fn __floordiv__(a: Self, b: Self) -> Self:
-        let div: Self.Coef = b.re*b.re + b.wo*b.wo - b.re*b.wo
-        let arebwo: Self.Coef = a.re * b.wo
+        var div: Self.Coef = b.re*b.re + b.wo*b.wo - b.re*b.wo
+        var arebwo: Self.Coef = a.re * b.wo
         return Self(a.re*b.re + a.wo*b.wo - arebwo, a.wo*b.re - arebwo) // div
     
 
@@ -250,7 +250,7 @@ struct ESIMD_rewo[dt: DType, sw: Int](Stringable):
     
     @always_inline("nodebug")
     fn __mul__(a: Self, b: Self) -> Self:
-        let c = -(a.wo * b.wo)
+        var c = -(a.wo * b.wo)
         return Self((a.re * b.re) + c, (a.re * b.wo) + (a.wo * b.re) + c)
     
     @always_inline("nodebug")
@@ -259,8 +259,8 @@ struct ESIMD_rewo[dt: DType, sw: Int](Stringable):
 
     @always_inline("nodebug")
     fn __floordiv__(a: Self, b: Self) -> Self:
-        let div = b.re*b.re + b.wo*b.wo - b.re*b.wo
-        let arebwo = a.re * b.wo
+        var div = b.re*b.re + b.wo*b.wo - b.re*b.wo
+        var arebwo = a.re * b.wo
         return Self(a.re*b.re + a.wo*b.wo - arebwo, a.wo*b.re - arebwo) // div
 
 
@@ -437,7 +437,7 @@ struct LitIntE_wovo(Stringable):
     
     @always_inline("nodebug")
     fn __mul__(a: Self, b: Self) -> Self:
-        let c: Self.Coef = a.wo*b.vo + a.vo*b.wo
+        var c: Self.Coef = a.wo*b.vo + a.vo*b.wo
         return Self(a.vo*b.vo - c, a.wo*b.wo - c)
 
     @always_inline("nodebug")
@@ -592,7 +592,7 @@ struct ESIMD_wovo[dt: DType, sw: Int](Stringable):
     
     @always_inline("nodebug")
     fn __mul__(a: Self, b: Self) -> Self:
-        let c = a.wo*b.vo + a.vo*b.wo
+        var c = a.wo*b.vo + a.vo*b.wo
         return Self(a.vo*b.vo - c, a.wo*b.wo - c)
 
     @always_inline("nodebug")

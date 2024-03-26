@@ -1,13 +1,14 @@
 # Monums
 Strange numbers for Mojo🔥.
 
-Mojo version 0.7.0
+Mojo version 24.1.1
 
 # Package Layout
 - monums.sequences
-    - integer sequences
-    - mathematical constants
-    - automatic lookup table generation
+    - constants
+    - combinatorics
+- monums.solver
+    - newton raphson method
 - monums.eisenstein
     - eisenstein literals (arbitrary precision)
         - LitIntE_rewo

@@ -1,6 +1,7 @@
 from monums import LitIntE_rewo, LitIntE_wovo, IntE_rewo, IntE_wovo, ESIMD_rewo, ESIMD_wovo
 from monums.sequences import factorial, multifactorial, factorial_gamma, factorial_stirling, factorial_slow, simplicial, pascal, generate_lookup
-from monums.sequences import fibonacci, recurrent, newtons_method
+from monums.sequences import fibonacci, recurrent
+from monums.solver import newtons_method
 from monums.discrete import Discrete
 from sys import argv
 
@@ -11,7 +12,7 @@ from sys import argv
 
 
 fn main():
-    let args: VariadicList[StringRef] = argv()
+    var args: VariadicList[StringRef] = argv()
 
     if len(args) > 1 and args[1] == "temp": temp()
     if len(args) > 1 and args[1] == "newt": test_newtons_method()
@@ -76,9 +77,9 @@ fn test_LitIntE_rewo():
 
 
 fn test_ESIMD_rewo():
-    let a: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](4,0,20)
-    let b: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](2,0,4)
-    let c: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](0,0, (1<<50) + 3)
+    var a: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](4,0,20)
+    var b: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](2,0,4)
+    var c: ESIMD_rewo[DType.index,2] = ESIMD_rewo[DType.index,2](0,0, (1<<50) + 3)
 
     print()
     print("#------ rewo SIMD Test ------#")
@@ -114,8 +115,8 @@ fn test_LitIntE_wovo():
 
 
 fn test_ESIMD_wovo():
-    let a: ESIMD_wovo[DType.index,2] = ESIMD_wovo[DType.index,2](4,0,20)
-    let b: ESIMD_wovo[DType.index,2] = ESIMD_wovo[DType.index,2](2,0,4)
+    var a: ESIMD_wovo[DType.index,2] = ESIMD_wovo[DType.index,2](4,0,20)
+    var b: ESIMD_wovo[DType.index,2] = ESIMD_wovo[DType.index,2](2,0,4)
 
     print()
     print("#------ wovo SIMD Test ------#")

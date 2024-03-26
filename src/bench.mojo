@@ -9,8 +9,8 @@ fn main():
 
     alias lfac: Int = 20
 
-    let fib: Int = random_si64(50,50).value
-    let fac: Int = random_si64(lfac,lfac).value
+    var fib: Int = random_si64(50,50).value
+    var fac: Int = random_si64(lfac,lfac).value
 
     @parameter
     fn fib_gen():
@@ -49,17 +49,17 @@ fn main():
 
     @parameter
     fn fac_int():
-        let o = factorial(fac)
+        var o = factorial(fac)
         benchmark.keep(o)
 
     @parameter
     fn fac_lit():
-        let o = factorial[lfac]()
+        var o = factorial[lfac]()
         benchmark.keep(o)
 
     @parameter
     fn fac_lit2():
-        let o = factorial(lfac)
+        var o = factorial(lfac)
         benchmark.keep(o)
 
     print()
@@ -83,7 +83,7 @@ fn fibonacci_hard(iterations: Int) -> Int:
     var _n0: Int = 0
     var _n1: Int = 1
     for i in range(iterations):
-        let _n2: Int = _n0 + _n1
+        var _n2: Int = _n0 + _n1
         _n0 = _n1
         _n1 = _n2
     return _n1

@@ -100,7 +100,7 @@ fn permutial[n: Int, r: Int]() -> Int:
 @always_inline
 fn permutial(n: IntLiteral, r: IntLiteral) -> IntLiteral:
     var i      : IntLiteral = n-r+1
-    let end    : IntLiteral = n+1
+    var end    : IntLiteral = n+1
     var result : IntLiteral = 1
     while i < end:
         result *= i
@@ -118,8 +118,8 @@ fn permutial[r: Int](n: Int) -> Int:
 
 @always_inline
 fn permutial(n: Int, r: Int) -> Int:
-    let start  : Int = n-r+1
-    let end    : Int = n+1
+    var start  : Int = n-r+1
+    var end    : Int = n+1
     var result : Int = 1
     for i in range(start, end): result *= i
     return result
@@ -142,7 +142,7 @@ fn supertial[d: Int, n: Int]() -> Int:
 @always_inline
 fn supertial(d: IntLiteral, n: IntLiteral) -> IntLiteral:
     var i      : IntLiteral = n+1
-    let end    : IntLiteral = n+d+1
+    var end    : IntLiteral = n+d+1
     var result : IntLiteral = 1
     while i < end:
         result *= i
@@ -160,8 +160,8 @@ fn supertial[d: Int](n: Int) -> Int:
 
 @always_inline
 fn supertial(d: Int, n: Int) -> Int:
-    let start  : Int = n+1
-    let end    : Int = n+d+1
+    var start  : Int = n+1
+    var end    : Int = n+d+1
     var result : Int = 1
     for i in range(start, end): result *= i
     return result
