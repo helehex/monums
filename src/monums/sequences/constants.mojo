@@ -15,21 +15,5 @@ alias ln2   : FloatLiteral = 0.6931471805_5994530941_7232121458_1765680755_00134
 alias omega : FloatLiteral = 0.5671432904_0978387299_9968662210_3555497538_1578718651_2508135131_0792230457_9308668456_6693219446_9617522945 # lw(1)
 alias gamma : FloatLiteral = 0.5772156649_0153286060_6512090082_4024310421_5933593992_3598805767_2348848677_2677766467_0936947063_2917467495 # -diff[lgamma](1)
 
-# maybe use capitals for constants instead
-alias E     = e
-alias PI    = pi
-alias TAU   = tau
-alias HFPI  = hfpi
-alias TRPI  = trpi
-alias QTPI  = qtpi
-alias PHI   = phi
-alias PHO   = pho
-alias RT2   = rt2
-alias TRH   = trh
-alias TWRT2 = twrt2 # twelfth root of 2
-alias LN2   = ln2
-alias OMEGA = omega
-alias GAMMA = gamma
-
 alias strange = [1, 2, 21, 22, 3, 31, 32, 321, 322, 33, 331, 332, 4, 41, 42, 421, 422, 43, 431, 432, 4321, 4322, 433, 4331, 4332, 44, 441, 442, 4421, 4422, 443, 4431, 4432, 5]
 alias weird = [70, 836, 4030, 5830, 7192, 7912, 9272, 10430, 10570, 10792, 10990, 11410, 11690, 12110, 12530, 12670]

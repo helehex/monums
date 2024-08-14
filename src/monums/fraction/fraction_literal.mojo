@@ -1,13 +1,14 @@
 from ..sequences import gcd
 
-@nonmaterializable(Float)
+@nonmaterializable(Float64)
 @register_passable("trivial")
 struct FractionLiteral:
     var numerator: IntLiteral
     var denominator: IntLiteral
 
-    fn __init__(value: IntLiteral) -> Self:
-        return Self{numerator: value, denominator: 1}
+    fn __init__(inout self, value: IntLiteral):
+        self.numerator = value
+        self.denominator = 1
 
     # fn __init__(value: FloatLiteral) -> Self:
     #     var num: FloatLiteral = value
@@ -18,15 +19,3 @@ struct FractionLiteral:
     #     let den: IntLiteral = 64**i
     #     let div: IntLiteral = gcd(num, den)
     #     return Self{numerator: num/div, denominator: den/div}
-
-@register_passable("trivial")
-struct Float:
-
-    var value: FloatLiteral
-
-    fn __init__(value: FloatLiteral) -> Self:
-        return Self{value: value}
-
-    fn __init__(value: FractionLiteral) -> Self:
-        return Self((value.numerator / value.denominator).value)
-

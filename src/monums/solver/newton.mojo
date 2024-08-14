@@ -1,16 +1,14 @@
-from math import abs, select
-
-alias Nan: FloatLiteral = __mlir_attr.`0x7ff8000000000000:f64`
+alias nan: FloatLiteral = FloatLiteral.nan
 
 
 #------ Newtons Method ------#
 #
 fn newtons_method[type: DType, size: Int,
-    f: fn(SIMD[type,size])->SIMD[type,size],
-    df: fn(SIMD[type,size])->SIMD[type,size],
+    f: fn(x: SIMD) -> __type_of(x),
+    df: fn(x: SIMD) -> __type_of(x),
     iterations: Int = 8,
-    tolerance: FloatLiteral = Nan,
-    epsilon: FloatLiteral = Nan
+    tolerance: FloatLiteral = nan,
+    epsilon: FloatLiteral = nan
     ](x0: SIMD[type,size], y_offset: SIMD[type,size] = 0) -> SIMD[type,size]:
     
     """
@@ -39,7 +37,7 @@ fn newtons_method[type: DType, size: Int,
     """
 
     constrained[type.is_floating_point(), "`type` parameter must be a floating-point"]()
-    alias _nan: SIMD[type,size] = nan[type]()
+    alias _nan: SIMD[type,size] = nan
 
     var completed: SIMD[DType.bool,size] = False
     var x1: SIMD[type,size] = x0
@@ -51,7 +49,7 @@ fn newtons_method[type: DType, size: Int,
         if tolerance == tolerance:
             var exploded = abs(yp) <= epsilon
             completed |= exploded
-            x1 = select(exploded, _nan, x1)
+            x1 = exploded.select(_nan, x1)
         
         var x2 = x1 - (f(x1)-y_offset)/yp
 
@@ -62,9 +60,9 @@ fn newtons_method[type: DType, size: Int,
         @parameter
         if tolerance == tolerance or epsilon == epsilon:
             if completed.reduce_and(): return x1
-            x1 = select(completed, x1, x2)
+            x1 = completed.select(x1, x2)
         else: x1 = x2
 
     @parameter
-    if tolerance == tolerance or epsilon == epsilon: return select(completed, x1, _nan)
+    if tolerance == tolerance or epsilon == epsilon: return completed.select(x1, _nan)
     return x1

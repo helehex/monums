@@ -1,4 +1,4 @@
-from math import sqrt, log, exp, tgamma, lgamma
+from math import sqrt, log, exp, gamma, lgamma
 
 #------ lgamma ------#
 # The lgamma functions compute the natural logarithm of the absolute value of gamma of x.
@@ -24,7 +24,7 @@ fn factorial_stirling(n: Float64) -> Float64:
 
 @always_inline
 fn factorial_gamma(n: Float64) -> Float64:
-    return tgamma(n + 1.0)
+    return gamma(n + 1.0)
 
 @always_inline
 fn factorial[n: IntLiteral]() -> IntLiteral: return multifactorial[1,n]()
@@ -112,7 +112,7 @@ fn permutial[r: Int](n: Int) -> Int:
     alias start : Int = 1-r
     alias end   : Int = 1
     var result  : Int = 1
-    @unroll
+    @parameter
     for i in range(start, end): result *= n+i
     return result
 
@@ -154,7 +154,7 @@ fn supertial[d: Int](n: Int) -> Int:
     alias start : Int = 1
     alias end   : Int = d+1
     var result  : Int = 1
-    @unroll
+    @parameter
     for i in range(start, end): result *= n+i
     return result
 

@@ -3,14 +3,14 @@ struct Discrete[fraction: Float64]:
 
     var value: Int
 
-    fn __init__(value: Tuple[Int]) -> Self:
-        return Self{value: value.get[0,Int]()}
+    fn __init__(inout self, value: Tuple[Int]):
+        self.value = value[0]
 
     fn fracture(self) -> Float64:
         return self.value * self.fraction
 
     fn __str__(self) -> String:
-        return String(self.fracture())
+        return str(self.fracture())
 
 
     #------( Arithmetic )------#
@@ -95,7 +95,7 @@ struct Discrete[fraction: Float64]:
         return other / self.fracture()
 
     fn __rfloordiv__(self, other: Int) -> Self:
-        return Self((other / (self.fracture()*self.fraction)).to_int())
+        return Self(int(other / (self.fracture()*self.fraction)))
 
     fn __rfloordiv__(self, other: Float64) -> Float64:
         return other // self.fracture()

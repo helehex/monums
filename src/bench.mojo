@@ -5,32 +5,9 @@ from monums.sequences import fibonacci, factorial, factorial_gamma, factorial_st
 
 
 fn main():
-
-
     alias lfac: Int = 20
 
-    var fib: Int = random_si64(50,50).value
     var fac: Int = random_si64(lfac,lfac).value
-
-    @parameter
-    fn fib_gen():
-        var o = fibonacci(fib)
-        benchmark.keep(o)
-
-    @parameter
-    fn fib_hard():
-        var o = fibonacci_hard(fib)
-        benchmark.keep(o)
-
-    @parameter
-    fn fib_rewo():
-        var o = fibonacci_rewo(fib)
-        benchmark.keep(o)
-
-    @parameter
-    fn fib_wovo():
-        var o = fibonacci_wovo(fib)
-        benchmark.keep(o)
 
     @parameter
     fn fac_gam():
@@ -70,32 +47,3 @@ fn main():
     print("fac_lit  :", benchmark.run[fac_lit](max_runtime_secs = 1.0).mean("ns"))
     print("fac_lit2 :", benchmark.run[fac_lit2](max_runtime_secs = 1.0).mean("ns"))
     print()
-    print("fib_hard :", benchmark.run[fib_hard](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_gen  :", benchmark.run[fib_gen](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_rewo :", benchmark.run[fib_rewo](max_runtime_secs = 1.0).mean("ns"))
-    print("fib_wovo :", benchmark.run[fib_wovo](max_runtime_secs = 1.0).mean("ns"))
-    print()
-
-
-
-
-fn fibonacci_hard(iterations: Int) -> Int:
-    var _n0: Int = 0
-    var _n1: Int = 1
-    for i in range(iterations):
-        var _n2: Int = _n0 + _n1
-        _n0 = _n1
-        _n1 = _n2
-    return _n1
-
-
-from monums import IntE_rewo, IntE_wovo
-from monums.sequences import recurrent
-
-@always_inline("nodebug")
-fn wo_add(a: IntE_rewo, b: IntE_rewo) -> IntE_rewo: return b.wo_add(a)
-@always_inline("nodebug")
-fn wo_add(a: IntE_wovo, b: IntE_wovo) -> IntE_wovo: return b.wo_add(a)
-
-alias fibonacci_rewo = recurrent[IntE_rewo, wo_add, IntE_rewo(0,0,0), IntE_rewo(0,1,0)]
-alias fibonacci_wovo = recurrent[IntE_wovo, wo_add, IntE_wovo(0,0,0), IntE_wovo(0,1,0)]

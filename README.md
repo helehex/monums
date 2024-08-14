@@ -1,7 +1,7 @@
 # Monums
 Strange numbers for Mojo🔥.
 
-Mojo version 24.1.1
+Version: Mojo nightly
 
 # Package Layout
 - monums.sequences
@@ -9,12 +9,3 @@ Mojo version 24.1.1
     - combinatorics
 - monums.solver
     - newton raphson method
-- monums.eisenstein
-    - eisenstein literals (arbitrary precision)
-        - LitIntE_rewo
-        - LitIntE_wovo
-    - eisenstein SIMD
-        - ESIMD_rewo
-        - ESIMD_wovo
-
-minor-algebras

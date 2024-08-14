@@ -1,1 +1,2 @@
-from monums.eisenstein import *
+from sequences import *
+from solver import *
