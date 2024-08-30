@@ -1,7 +1,11 @@
+# x----------------------------------------------------------------------------------------------x #
+# | MIT License
+# | Copyright (c) 2024 Helehex
+# x----------------------------------------------------------------------------------------------x #
+"""Deprecated Sequences. Moving to gen."""
+
 from .combinatorics import *
 from .constants import *
-from .iterative import *
-from .lookup import generate_lookup
 
 #------ Prime ------#
 #

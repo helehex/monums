@@ -1,11 +1,14 @@
 # Monums
 Strange numbers for Mojo🔥.
 
-Version: Mojo nightly
+Mojo nightly version: `mojo 2024.8.2916 (1e9c68e6)`
 
 # Package Layout
-- monums.sequences
-    - constants
+- cache
+    - cached lookup tables
+- gen
+    - lookup table generator
+- sequences
     - combinatorics
-- monums.solver
-    - newton raphson method
+    - constants
+        - strange numbers
